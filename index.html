@@ -416,20 +416,22 @@ input[type=range] { accent-color: var(--navy); cursor: pointer; }
     </div>
 
     <div class="card shaded">
-      <div class="card-title">Future state — QA capacity requirement (weekly)</div>
+      <div class="card-title">Future state — QA capacity requirement by workstream &amp; LOB (weekly)</div>
       <div class="kpi-grid" id="fut-kpis"></div>
       <table>
-        <thead><tr><th>Workstream</th><th>Owner</th><th>Vol/wk</th><th>Min/unit</th><th>Hrs/wk</th><th style="min-width:80px">% of load</th></tr></thead>
+        <thead>
+          <tr>
+            <th>Workstream / LOB</th>
+            <th>Owner</th>
+            <th>Vol / wk</th>
+            <th>Min / unit</th>
+            <th>Hrs / wk</th>
+            <th>Coverage</th>
+            <th style="min-width:70px">% of load</th>
+          </tr>
+        </thead>
         <tbody id="fut-tbody"></tbody>
         <tfoot id="fut-tfoot"></tfoot>
-      </table>
-    </div>
-
-    <div class="card shaded">
-      <div class="card-title">Future state — queue coverage (ATAI statistical sample)</div>
-      <table>
-        <thead><tr><th>Queue</th><th>Monthly vol.</th><th>Stat. sample / mo</th><th>Sample / wk</th><th>Coverage %</th><th>DSAT / mo</th></tr></thead>
-        <tbody id="fut-queue-tbody"></tbody>
       </table>
     </div>
   </div>
@@ -869,54 +871,76 @@ function calcFuture(){
   const tAta  = n('f-t-ata'),  tDisp = n('f-t-disp');
   const auditAvail = calcTimeBudget();
 
-  // Volumes
-  const csVol = n('f-cs-vol'), tsVol = n('f-ts-vol'), l2Vol = n('f-l2-vol');
+  // Per-queue base data
   const queues = [
-    {id:'cs', name:Q_NAMES.cs, color:Q_COLORS.cs, vol:csVol, dsat:n('f-dsat-cs')},
-    {id:'ts', name:Q_NAMES.ts, color:Q_COLORS.ts, vol:tsVol, dsat:n('f-dsat-ts')},
-    {id:'l2', name:Q_NAMES.l2, color:Q_COLORS.l2, vol:l2Vol, dsat:n('f-dsat-l2')},
+    {id:'cs', name:Q_NAMES.cs, color:Q_COLORS.cs, vol:n('f-cs-vol'), dsat:n('f-dsat-cs'), thf:n('f-thf-cs')},
+    {id:'ts', name:Q_NAMES.ts, color:Q_COLORS.ts, vol:n('f-ts-vol'), dsat:n('f-dsat-ts'), thf:n('f-thf-ts')},
+    {id:'l2', name:Q_NAMES.l2, color:Q_COLORS.l2, vol:n('f-l2-vol'), dsat:n('f-dsat-l2'), thf:0},
   ];
 
-  // ATAI stat samples per queue
-  let futAtaiVolWk=0, futAtaiHrsWk=0;
-  const queueSamples = queues.map(q=>{
-    const sample = cochran(q.vol, Z, p, E);
-    const perWk  = Math.ceil(sample/WEEKS);
-    futAtaiVolWk += perWk;
-    futAtaiHrsWk += perWk*tAtai/60;
-    return {...q, sample, perWk};
+  // ── ATAI: stat sample per queue ──
+  const qAtai = queues.map(q => {
+    const sampleMo = cochran(q.vol, Z, p, E);
+    const volWk    = Math.ceil(sampleMo / WEEKS);
+    const hrsWk    = volWk * tAtai / 60;
+    const covPct   = q.vol > 0 ? (sampleMo / q.vol) * 100 : 0;
+    return { ...q, sampleMo, volWk, hrsWk, covPct };
   });
+  const futAtaiVolWk  = qAtai.reduce((s,q)=>s+q.volWk, 0);
+  const futAtaiHrsWk  = qAtai.reduce((s,q)=>s+q.hrsWk, 0);
 
-  // DSAT
-  const futDsatMo = queues.reduce((s,q)=>s+q.dsat, 0);
-  const futDsatWkTotal = futDsatMo/WEEKS;
-  let futDsatVolWk, futDsatHrsWk;
-  if(aiRate===0){
-    futDsatVolWk = futDsatWkTotal;
-    futDsatHrsWk = futDsatVolWk*tDsat/60;
-  } else {
-    const aiMo   = futDsatMo*aiRate;
-    const spotMo = cochran(aiMo, Zd, 0.5, Ed);
-    const humanMo= futDsatMo*(1-aiRate);
-    futDsatVolWk = (spotMo+humanMo)/WEEKS;
-    futDsatHrsWk = futDsatVolWk*tDsat/60;
-  }
+  // ── DSAT: per queue, proportional split ──
+  const futDsatMo      = queues.reduce((s,q)=>s+q.dsat, 0);
+  const futDsatWkTotal = futDsatMo / WEEKS;
+  const qDsat = queues.map(q => {
+    let volWk, hrsWk;
+    if (aiRate === 0) {
+      volWk = q.dsat / WEEKS;
+    } else {
+      const aiQMo   = q.dsat * aiRate;
+      const spotQMo = cochran(aiQMo, Zd, 0.5, Ed);
+      const humanQMo= q.dsat * (1 - aiRate);
+      volWk = (spotQMo + humanQMo) / WEEKS;
+    }
+    hrsWk = volWk * tDsat / 60;
+    return { ...q, volWk, hrsWk };
+  });
+  const futDsatVolWk = qDsat.reduce((s,q)=>s+q.volWk, 0);
+  const futDsatHrsWk = qDsat.reduce((s,q)=>s+q.hrsWk, 0);
 
-  // THF
-  const thfMo = n('f-thf-cs')+n('f-thf-ts');
-  const thfWk = thfMo/WEEKS, thfHrs = thfWk*tThf/60;
+  // ── THF: per queue ──
+  const qThf = queues.map(q => {
+    const volWk = q.thf / WEEKS;
+    const hrsWk = volWk * tThf / 60;
+    return { ...q, volWk, hrsWk };
+  });
+  const thfWk  = qThf.reduce((s,q)=>s+q.volWk, 0);
+  const thfHrs = qThf.reduce((s,q)=>s+q.hrsWk, 0);
 
-  // Disputes + ATA
-  const futDispVolWk = futAtaiVolWk*dispRate;
-  const futDispHrsWk = futDispVolWk*tDisp/60;
-  const futManualVolWk = futAtaiVolWk+futDsatVolWk+futDispVolWk;
-  const futAtaVolWk  = futManualVolWk*ataRate;
-  const futAtaHrsWk  = futAtaVolWk*tAta/60;
+  // ── Disputes: proportional to ATAI volume per queue ──
+  const qDisp = qAtai.map(q => {
+    const volWk = q.volWk * dispRate;
+    const hrsWk = volWk * tDisp / 60;
+    return { ...q, volWk, hrsWk };
+  });
+  const futDispVolWk = qDisp.reduce((s,q)=>s+q.volWk, 0);
+  const futDispHrsWk = qDisp.reduce((s,q)=>s+q.hrsWk, 0);
 
-  const futTotalHrs = futAtaiHrsWk+futDsatHrsWk+thfHrs+futDispHrsWk+futAtaHrsWk;
-  const futFtes     = auditAvail>0 ? futTotalHrs/auditAvail : Infinity;
-  const futFtesCeil = Math.ceil(futFtes*10)/10;
+  // ── ATA: applied proportionally across ATAI + DSAT + disputes per queue ──
+  const qAta = queues.map((q,i) => {
+    const manualVolWk = qAtai[i].volWk + qDsat[i].volWk + qDisp[i].volWk;
+    const volWk = manualVolWk * ataRate;
+    const hrsWk = volWk * tAta / 60;
+    return { ...q, volWk, hrsWk };
+  });
+  const futAtaVolWk = qAta.reduce((s,q)=>s+q.volWk, 0);
+  const futAtaHrsWk = qAta.reduce((s,q)=>s+q.hrsWk, 0);
 
+  const futTotalHrs = futAtaiHrsWk + futDsatHrsWk + thfHrs + futDispHrsWk + futAtaHrsWk;
+  const futFtes     = auditAvail > 0 ? futTotalHrs / auditAvail : Infinity;
+  const futFtesCeil = Math.ceil(futFtes * 10) / 10;
+
+  // ── KPIs ──
   document.getElementById('fut-kpis').innerHTML =
     kpi('Total QA audit hrs/wk', fmt(futTotalHrs,1), 'all workstreams', 'accent') +
     kpi('QA FTEs required', fmt(futFtesCeil,1), 'for statistical validity',
@@ -926,37 +950,69 @@ function calcFuture(){
     kpi('ATA /wk', fmt(futAtaVolWk,1), fmt(futAtaHrsWk,1)+' hrs') +
     kpi('Disputes /wk', fmt(futDispVolWk,1), fmt(futDispHrsWk,1)+' hrs');
 
-  const futRows=[
-    {ws:'ATAI (stat. sample per queue)',owner:'QA — all queues',vol:futAtaiVolWk,min:tAtai,hrs:futAtaiHrsWk,color:Q_COLORS.cs},
-    {ws:'DSAT review'+(aiRate>0?' (AI spot-check)':' (100% manual)'),owner:aiRate>0?`AI ${fmt(aiRate*100,0)}%; QA validates`:'QA — fully manual',vol:futDsatVolWk,min:tDsat,hrs:futDsatHrsWk,color:'#DC2626'},
-    {ws:'THF reviews',owner:'QA — 100% coverage',vol:thfWk,min:tThf,hrs:thfHrs,color:Q_COLORS.ts},
-    {ws:'Dispute reviews',owner:'Sr. QA / QM',vol:futDispVolWk,min:tDisp,hrs:futDispHrsWk,color:'#4F46E5'},
-    {ws:'ATA — Audit the Auditor',owner:`QA — ${fmt(ataRate*100,0)}% of manual vol.`,vol:futAtaVolWk,min:tAta,hrs:futAtaHrsWk,color:Q_COLORS.l2},
-  ];
-  document.getElementById('fut-tbody').innerHTML = futRows.map(r=>`<tr>
-    <td><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${r.color};margin-right:6px"></span><strong>${r.ws}</strong></td>
-    <td style="font-size:11px;color:var(--gray-400)">${r.owner}</td>
-    <td>${fmt(r.vol,1)}/wk</td><td>${fmt(r.min)} min</td>
-    <td style="font-weight:600">${fmt(r.hrs,1)} hrs</td>
-    <td><div class="bar-track"><div class="bar-fill" style="background:${r.color};width:${futTotalHrs>0?Math.min(r.hrs/futTotalHrs*100,100).toFixed(0):0}%"></div></div></td>
-    </tr>`).join('');
-  document.getElementById('fut-tfoot').innerHTML = `<tr class="tfoot-row"><td>Total</td><td>QA team</td><td>—</td><td>—</td><td style="color:var(--navy)">${fmt(futTotalHrs,1)} hrs/wk</td><td></td></tr>`;
+  // ── Table: workstream headers + LOB sub-rows ──
+  // Helper: render a workstream group
+  function wsGroup(wsLabel, owner, wsColor, queueRows, totalVolWk, totalHrsWk, minPerUnit, showCoverage) {
+    const pct = futTotalHrs > 0 ? Math.min(totalHrsWk / futTotalHrs * 100, 100) : 0;
+    let html = `<tr style="background:var(--gray-50)">
+      <td style="padding-left:10px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${wsColor};margin-right:7px;vertical-align:1px"></span><strong>${wsLabel}</strong></td>
+      <td style="font-size:11px;color:var(--gray-400)">${owner}</td>
+      <td style="font-weight:600">${fmt(totalVolWk,1)}/wk</td>
+      <td>${fmt(minPerUnit)} min</td>
+      <td style="font-weight:700;color:var(--navy)">${fmt(totalHrsWk,1)} hrs</td>
+      <td></td>
+      <td><div class="bar-track"><div class="bar-fill" style="background:${wsColor};width:${pct.toFixed(0)}%"></div></div></td>
+    </tr>`;
+    queueRows.forEach(q => {
+      if (q.vol <= 0 && q.volWk <= 0) return;
+      const covCell = showCoverage
+        ? `<span style="font-size:10px;color:var(--gray-400)">${fmt(q.covPct !== undefined ? q.covPct : (q.vol>0?(q.volWk*WEEKS/q.vol*100):0),1)}% cov.</span>`
+        : `<span style="font-size:10px;color:var(--gray-400)">${fmt(q.dsat||0)}/mo DSAT</span>`;
+      html += `<tr>
+        <td style="padding-left:28px;font-size:12px;color:${q.color}">↳ ${q.name}</td>
+        <td></td>
+        <td style="font-size:12px">${fmt(q.volWk,1)}/wk</td>
+        <td></td>
+        <td style="font-size:12px;color:var(--gray-600)">${fmt(q.hrsWk,1)} hrs</td>
+        <td>${covCell}</td>
+        <td></td>
+      </tr>`;
+    });
+    return html;
+  }
 
-  // Summary above table
+  let tbody = '';
+  tbody += wsGroup(
+    'ATAI — statistical sample', 'QA · all queues', Q_COLORS.cs,
+    qAtai.map(q=>({...q, covPct:q.covPct})),
+    futAtaiVolWk, futAtaiHrsWk, tAtai, true
+  );
+  tbody += wsGroup(
+    'DSAT review' + (aiRate>0?' (AI spot-check)':' (100% manual)'),
+    aiRate>0 ? `AI ${fmt(aiRate*100,0)}%; QA validates` : 'QA — fully manual',
+    '#DC2626',
+    qDsat, futDsatVolWk, futDsatHrsWk, tDsat, false
+  );
+  tbody += wsGroup(
+    'THF reviews', 'QA · 100% coverage', Q_COLORS.ts,
+    qThf.filter(q=>q.thf>0), thfWk, thfHrs, tThf, false
+  );
+  tbody += wsGroup(
+    'Dispute reviews', 'Sr. QA / QM', '#4F46E5',
+    qDisp, futDispVolWk, futDispHrsWk, tDisp, false
+  );
+  tbody += wsGroup(
+    'ATA — Audit the Auditor', `QA · ${fmt(ataRate*100,0)}% of manual vol.`, Q_COLORS.l2,
+    qAta, futAtaVolWk, futAtaHrsWk, tAta, false
+  );
+
+  document.getElementById('fut-tbody').innerHTML = tbody;
+  document.getElementById('fut-tfoot').innerHTML =
+    `<tr class="tfoot-row"><td>Total</td><td>QA team</td><td>—</td><td>—</td><td style="color:var(--navy)">${fmt(futTotalHrs,1)} hrs/wk</td><td></td><td></td></tr>`;
+
+  // Summary line above table
   document.getElementById('f-atai-summary').textContent =
-    `Stat. significant samples: CS ${fmt(queueSamples[0].perWk)}/wk · TS ${fmt(queueSamples[1].perWk)}/wk · L2 ${fmt(queueSamples[2].perWk)}/wk · Total ${fmt(futAtaiVolWk)}/wk`;
-
-  // Queue coverage table
-  document.getElementById('fut-queue-tbody').innerHTML = queueSamples.map(q=>{
-    const cov = q.vol>0?(q.sample/q.vol)*100:0;
-    return `<tr>
-      <td><span style="color:${q.color};font-weight:600">● ${q.name}</span></td>
-      <td>${fmt(q.vol)}/mo</td>
-      <td>${fmt(q.sample)}/mo</td>
-      <td>${fmt(q.perWk)}/wk</td>
-      <td>${fmt(cov,1)}%<div class="bar-track" style="margin-top:2px"><div class="bar-fill" style="background:${q.color};width:${Math.min(cov,100).toFixed(0)}%"></div></div></td>
-      <td>${fmt(q.dsat)}/mo</td></tr>`;
-  }).join('');
+    `Stat. significant samples: CS ${fmt(qAtai[0].volWk)}/wk · TS ${fmt(qAtai[1].volWk)}/wk · L2 TS ${fmt(qAtai[2].volWk)}/wk · Total ${fmt(futAtaiVolWk)}/wk`;
 
   // Stash for comparison
   window._fut = { futAtaiHrsWk, futDsatHrsWk, thfHrs, futDispHrsWk, futAtaHrsWk,
