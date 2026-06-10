@@ -5,192 +5,206 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QI Capacity Calculator — Samsara</title>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --navy: #1B2B4B;
-    --teal: #00A8E0;
-    --amber: #F39C12;
-    --white: #ffffff;
-    --gray-50: #F9FAFB;
-    --gray-100: #F3F4F6;
-    --gray-200: #E5E7EB;
-    --gray-400: #9CA3AF;
-    --gray-600: #4B5563;
-    --gray-800: #1F2937;
-    --green: #059669;
-    --green-bg: #ECFDF5;
-    --green-text: #065F46;
-    --red: #DC2626;
-    --red-bg: #FEF2F2;
-    --red-text: #991B1B;
-    --amber-bg: #FFFBEB;
-    --amber-text: #92400E;
-    --blue-bg: #EFF6FF;
-    --blue-text: #1E40AF;
-    --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-  }
+:root {
+  --navy: #1B2B4B;
+  --teal: #00A8E0;
+  --amber: #F39C12;
+  --cs: #2563EB;
+  --ts: #059669;
+  --l2: #7C3AED;
+  --white: #ffffff;
+  --gray-50: #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-400: #9CA3AF;
+  --gray-600: #4B5563;
+  --gray-800: #1F2937;
+  --green: #059669;
+  --green-bg: #ECFDF5;
+  --green-text: #065F46;
+  --red: #DC2626;
+  --red-bg: #FEF2F2;
+  --red-text: #991B1B;
+  --amber-bg: #FFFBEB;
+  --amber-text: #92400E;
+  --blue-bg: #EFF6FF;
+  --blue-text: #1E40AF;
+  --purple-bg: #F5F3FF;
+  --purple-text: #5B21B6;
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
 
-  body { font-family: var(--font); background: var(--gray-50); color: var(--gray-800); font-size: 14px; line-height: 1.5; }
+body { font-family: var(--font); background: var(--gray-50); color: var(--gray-800); font-size: 14px; line-height: 1.5; }
 
-  /* ── Header ── */
-  .header { background: var(--navy); color: white; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }
-  .header-left { display: flex; align-items: center; gap: 16px; }
-  .logo { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
-  .logo span { color: var(--teal); }
-  .header-title { font-size: 14px; color: rgba(255,255,255,0.7); }
-  .header-badge { background: var(--amber); color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+.header { background: var(--navy); color: white; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; }
+.logo { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+.logo span { color: var(--teal); }
+.header-title { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 1px; }
+.header-badge { background: var(--amber); color: white; font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
 
-  /* ── Layout ── */
-  .container { max-width: 1100px; margin: 0 auto; padding: 24px 24px 48px; }
+.container { max-width: 1180px; margin: 0 auto; padding: 20px 24px 56px; }
 
-  /* ── Tabs ── */
-  .tabs { display: flex; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
-  .tab { padding: 7px 16px; border-radius: 8px; border: 1px solid var(--gray-200); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--gray-600); transition: all 0.15s; }
-  .tab:hover { border-color: var(--navy); color: var(--navy); }
-  .tab.active { background: var(--navy); color: white; border-color: var(--navy); }
-  .sec { display: none; }
-  .sec.active { display: block; }
+/* Tabs */
+.tabs { display: flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; }
+.tab { padding: 7px 16px; border-radius: 8px; border: 1px solid var(--gray-200); font-size: 13px; font-weight: 500; cursor: pointer; background: white; color: var(--gray-600); transition: all 0.15s; }
+.tab:hover { border-color: var(--navy); color: var(--navy); }
+.tab.active { background: var(--navy); color: white; border-color: var(--navy); }
+.sec { display: none; }
+.sec.active { display: block; }
 
-  /* ── Cards ── */
-  .card { background: white; border: 1px solid var(--gray-200); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
-  .card-title { font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--gray-100); }
-  .card.shaded { background: var(--gray-50); }
+/* Cards */
+.card { background: white; border: 1px solid var(--gray-200); border-radius: 12px; padding: 18px 22px; margin-bottom: 14px; }
+.card.shaded { background: var(--gray-50); }
+.card-title { font-size: 11px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--gray-100); }
 
-  /* ── Grid ── */
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-  @media (max-width: 700px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+/* Layout grids */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.grid4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+@media (max-width: 860px) { .grid2,.grid3,.grid4 { grid-template-columns: 1fr; } }
 
-  /* ── Form fields ── */
-  .field { margin-bottom: 10px; }
-  .field label { display: block; font-size: 11px; font-weight: 500; color: var(--gray-600); margin-bottom: 4px; }
-  .field input[type=number], .field select {
-    width: 100%; padding: 7px 10px; font-size: 13px; font-family: var(--font);
-    border: 1px solid var(--gray-200); border-radius: 8px; background: white; color: var(--gray-800);
-    transition: border-color 0.15s;
-  }
-  .field input[type=number]:focus, .field select:focus { outline: none; border-color: var(--teal); }
-  .field .hint { font-size: 10px; color: var(--gray-400); margin-top: 3px; }
-  .inline-inp {
-    width: 72px; padding: 5px 8px; font-size: 12px; font-family: var(--font);
-    border: 1px solid var(--gray-200); border-radius: 6px; background: white; color: var(--gray-800);
-  }
-  .inline-inp:focus { outline: none; border-color: var(--teal); }
+/* Form */
+.field { margin-bottom: 9px; }
+.field label { display: block; font-size: 11px; font-weight: 500; color: var(--gray-600); margin-bottom: 3px; }
+.field input[type=number], .field select {
+  width: 100%; padding: 6px 9px; font-size: 13px; font-family: var(--font);
+  border: 1px solid var(--gray-200); border-radius: 8px; background: white; color: var(--gray-800);
+}
+.field input[type=number]:focus, .field select:focus { outline: none; border-color: var(--teal); }
+.field .hint { font-size: 10px; color: var(--gray-400); margin-top: 2px; }
+.inline-inp {
+  width: 68px; padding: 5px 7px; font-size: 12px; font-family: var(--font);
+  border: 1px solid var(--gray-200); border-radius: 6px; background: white; color: var(--gray-800);
+}
+.inline-inp:focus { outline: none; border-color: var(--teal); }
 
-  /* ── LOB headers ── */
-  .lob-header { font-size: 12px; font-weight: 600; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 2px solid currentColor; display: inline-block; width: 100%; }
+/* Section heads */
+.section-head { font-size: 12px; font-weight: 600; color: var(--gray-800); margin-bottom: 8px; display: flex; align-items: center; gap: 7px; }
+.pip { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
 
-  /* ── Section heads ── */
-  .section-head { font-size: 12px; font-weight: 600; color: var(--gray-800); margin-bottom: 10px; display: flex; align-items: center; gap: 7px; }
-  .pip { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+/* Queue color labels */
+.q-cs { color: var(--cs); font-weight: 600; }
+.q-ts { color: var(--ts); font-weight: 600; }
+.q-l2 { color: var(--l2); font-weight: 600; }
 
-  /* ── KPI cards ── */
-  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 16px; }
-  .kpi { border-radius: 10px; padding: 12px 14px; background: var(--gray-50); border: 1px solid var(--gray-100); }
-  .kpi.accent { background: var(--navy); border-color: var(--navy); }
-  .kpi.good { background: var(--green-bg); border-color: #A7F3D0; }
-  .kpi.warn { background: var(--amber-bg); border-color: #FDE68A; }
-  .kpi.bad { background: var(--red-bg); border-color: #FECACA; }
-  .kpi.info { background: var(--blue-bg); border-color: #BFDBFE; }
-  .kl { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-  .kpi.accent .kl { color: rgba(255,255,255,0.55); }
-  .kpi.good .kl { color: var(--green-text); }
-  .kpi.warn .kl { color: var(--amber-text); }
-  .kpi.bad .kl { color: var(--red-text); }
-  .kpi.info .kl { color: var(--blue-text); }
-  .kv { font-size: 22px; font-weight: 700; color: var(--gray-800); line-height: 1; margin-bottom: 2px; }
-  .kpi.accent .kv { color: white; }
-  .kpi.good .kv { color: var(--green); }
-  .kpi.warn .kv { color: #D97706; }
-  .kpi.bad .kv { color: var(--red); }
-  .kpi.info .kv { color: #2563EB; }
-  .ks { font-size: 10px; color: var(--gray-400); }
-  .kpi.accent .ks { color: rgba(255,255,255,0.4); }
-  .kpi.good .ks { color: var(--green-text); }
+/* KPI strip */
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px,1fr)); gap: 9px; margin-bottom: 14px; }
+.kpi { border-radius: 10px; padding: 11px 13px; background: var(--gray-50); border: 1px solid var(--gray-100); }
+.kpi.accent { background: var(--navy); border-color: var(--navy); }
+.kpi.good { background: var(--green-bg); border-color: #A7F3D0; }
+.kpi.warn { background: var(--amber-bg); border-color: #FDE68A; }
+.kpi.bad { background: var(--red-bg); border-color: #FECACA; }
+.kpi.info { background: var(--blue-bg); border-color: #BFDBFE; }
+.kpi.purple { background: var(--purple-bg); border-color: #DDD6FE; }
+.kl { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
+.kpi.accent .kl { color: rgba(255,255,255,.5); }
+.kpi.good .kl { color: var(--green-text); }
+.kpi.warn .kl { color: var(--amber-text); }
+.kpi.bad .kl { color: var(--red-text); }
+.kpi.info .kl { color: var(--blue-text); }
+.kpi.purple .kl { color: var(--purple-text); }
+.kv { font-size: 21px; font-weight: 700; color: var(--gray-800); line-height: 1; margin-bottom: 2px; }
+.kpi.accent .kv { color: white; }
+.kpi.good .kv { color: var(--green); }
+.kpi.warn .kv { color: #D97706; }
+.kpi.bad .kv { color: var(--red); }
+.kpi.info .kv { color: #2563EB; }
+.kpi.purple .kv { color: #7C3AED; }
+.ks { font-size: 10px; color: var(--gray-400); }
+.kpi.accent .ks { color: rgba(255,255,255,.4); }
+.kpi.good .ks { color: var(--green-text); }
 
-  /* ── Tables ── */
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 0.05em; padding: 7px 10px; border-bottom: 1px solid var(--gray-200); text-align: left; white-space: nowrap; }
-  td { padding: 8px 10px; border-bottom: 1px solid var(--gray-100); color: var(--gray-800); vertical-align: middle; }
-  tr:last-child td { border-bottom: none; }
-  .tfoot-row td { font-weight: 600; background: var(--gray-50); }
-  .role-mgr { color: #2563EB; font-weight: 600; }
-  .role-qa { color: var(--green); font-weight: 600; }
+/* Tables */
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: .05em; padding: 6px 9px; border-bottom: 1px solid var(--gray-200); text-align: left; white-space: nowrap; }
+td { padding: 7px 9px; border-bottom: 1px solid var(--gray-100); color: var(--gray-800); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+.tfoot-row td { font-weight: 600; background: var(--gray-50); border-top: 1px solid var(--gray-200); border-bottom: none; }
 
-  /* ── Mini bar ── */
-  .bar-track { height: 8px; background: var(--gray-100); border-radius: 4px; overflow: hidden; min-width: 40px; }
-  .bar-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+/* Mini bar */
+.bar-track { height: 7px; background: var(--gray-100); border-radius: 4px; overflow: hidden; min-width: 40px; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width .3s; }
 
-  /* ── Stacked bar ── */
-  .stacked-track { height: 30px; display: flex; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
-  .stacked-seg { display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: white; transition: width 0.3s; min-width: 0; overflow: hidden; }
-  .stacked-legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 11px; color: var(--gray-600); margin-bottom: 8px; }
-  .stacked-legend span { display: flex; align-items: center; gap: 4px; }
-  .leg-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+/* Stacked bar */
+.stacked-track { height: 28px; display: flex; border-radius: 8px; overflow: hidden; margin-bottom: 6px; }
+.stacked-seg { display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: white; transition: width .3s; min-width: 0; overflow: hidden; }
+.stacked-legend { display: flex; gap: 10px; flex-wrap: wrap; font-size: 11px; color: var(--gray-600); margin-bottom: 6px; }
+.stacked-legend span { display: flex; align-items: center; gap: 4px; }
+.leg-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 
-  /* ── Budget rows ── */
-  .budget-section { margin-bottom: 6px; }
-  .budget-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-  .budget-label { font-size: 12px; color: var(--gray-600); flex: 1.2; }
-  .budget-inp {
-    width: 62px; padding: 5px 8px; font-size: 13px; font-family: var(--font); text-align: right;
-    border: 1px solid var(--gray-200); border-radius: 7px; background: white; color: var(--gray-800);
-  }
-  .budget-inp:focus { outline: none; border-color: var(--teal); }
-  .budget-unit { font-size: 11px; color: var(--gray-400); min-width: 24px; }
-  .budget-bar-track { flex: 1.5; height: 16px; background: var(--gray-100); border-radius: 6px; overflow: hidden; }
-  .budget-bar-fill { height: 100%; border-radius: 6px; transition: width 0.3s; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 9px; font-weight: 700; color: white; }
-  .sub-hint { font-size: 10px; color: var(--gray-400); margin-left: 0; margin-bottom: 8px; }
+/* Budget rows */
+.budget-row { display: flex; align-items: center; gap: 9px; margin-bottom: 4px; }
+.budget-label { font-size: 12px; color: var(--gray-600); flex: 1.2; }
+.budget-inp { width: 58px; padding: 5px 7px; font-size: 13px; font-family: var(--font); text-align: right; border: 1px solid var(--gray-200); border-radius: 7px; background: white; color: var(--gray-800); }
+.budget-inp:focus { outline: none; border-color: var(--teal); }
+.budget-unit { font-size: 11px; color: var(--gray-400); min-width: 22px; }
+.budget-bar-track { flex: 1.5; height: 15px; background: var(--gray-100); border-radius: 6px; overflow: hidden; }
+.budget-bar-fill { height: 100%; border-radius: 6px; transition: width .3s; display: flex; align-items: center; justify-content: flex-end; padding-right: 5px; font-size: 9px; font-weight: 700; color: white; }
+.sub-hint { font-size: 10px; color: var(--gray-400); margin-bottom: 8px; }
 
-  /* ── Divider ── */
-  .divider { border: none; border-top: 1px solid var(--gray-100); margin: 12px 0; }
+/* Misc */
+.divider { border: none; border-top: 1px solid var(--gray-100); margin: 10px 0; }
+.note { font-size: 11px; color: var(--gray-600); background: var(--gray-50); border-radius: 8px; padding: 9px 13px; line-height: 1.6; margin-top: 8px; border: 1px solid var(--gray-100); }
+.note.teal { background: #E0F7FC; border-color: #80DEEA; }
+.delta-pos { color: var(--red); font-weight: 600; }
+.delta-neg { color: var(--green); font-weight: 600; }
+.delta-zero { color: var(--gray-400); }
+input[type=range] { accent-color: var(--navy); cursor: pointer; }
+.stripe-left { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 9px 13px; margin-bottom: 10px; }
+.stripe-navy { border-color: var(--navy); background: #EFF6FF; }
+.stripe-teal { border-color: var(--teal); background: #E0F7FC; }
+.stripe-amber { border-color: var(--amber); background: var(--amber-bg); }
+.stripe-green { border-color: var(--green); background: var(--green-bg); }
+.stripe-purple { border-color: var(--l2); background: var(--purple-bg); }
+.stripe-title { font-size: 11px; font-weight: 700; margin-bottom: 3px; }
+.stripe-body { font-size: 11px; color: var(--gray-600); line-height: 1.5; }
 
-  /* ── Note box ── */
-  .note { font-size: 11px; color: var(--gray-600); background: var(--gray-50); border-radius: 8px; padding: 10px 14px; line-height: 1.6; margin-top: 10px; border: 1px solid var(--gray-100); }
-  .note.teal { background: #E0F7FC; border-color: #80DEEA; }
-  .note.amber { background: var(--amber-bg); border-color: #FDE68A; }
+/* Defense tab layers */
+.layer-card { border-radius: 12px; padding: 18px 20px; margin-bottom: 12px; border: 2px solid; }
+.layer-card.l1 { border-color: var(--teal); background: #E0F7FC; }
+.layer-card.l2 { border-color: var(--amber); background: var(--amber-bg); }
+.layer-card.l3 { border-color: #059669; background: var(--green-bg); }
+.layer-num { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
+.layer-card.l1 .layer-num { color: var(--teal); }
+.layer-card.l2 .layer-num { color: var(--amber); }
+.layer-card.l3 .layer-num { color: var(--green); }
+.layer-title { font-size: 15px; font-weight: 700; color: var(--gray-800); margin-bottom: 6px; }
+.layer-body { font-size: 12px; color: var(--gray-600); line-height: 1.65; }
+.layer-body li { margin-left: 14px; margin-bottom: 2px; }
 
-  /* ── Deltas ── */
-  .delta-pos { color: var(--red); font-weight: 600; }
-  .delta-neg { color: var(--green); font-weight: 600; }
-  .delta-zero { color: var(--gray-400); }
+/* Flow arrows */
+.flow-row { display: flex; align-items: center; gap: 0; overflow-x: auto; margin-bottom: 16px; }
+.flow-box { background: white; border: 1px solid var(--gray-200); border-radius: 10px; padding: 10px 14px; font-size: 12px; min-width: 120px; flex-shrink: 0; text-align: center; }
+.flow-box-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--gray-400); margin-bottom: 2px; }
+.flow-box-title { font-weight: 700; color: var(--gray-800); }
+.flow-arrow { font-size: 20px; color: var(--gray-400); padding: 0 6px; flex-shrink: 0; }
 
-  /* ── Range slider ── */
-  input[type=range] { accent-color: var(--navy); cursor: pointer; }
-
-  /* ── Callout stripe ── */
-  .stripe-left { border-left: 4px solid; border-radius: 0 8px 8px 0; padding: 10px 14px; margin-bottom: 12px; }
-  .stripe-teal { border-color: var(--teal); background: #E0F7FC; }
-  .stripe-amber { border-color: var(--amber); background: var(--amber-bg); }
-  .stripe-red { border-color: var(--red); background: var(--red-bg); }
-  .stripe-green { border-color: var(--green); background: var(--green-bg); }
-  .stripe-title { font-size: 11px; font-weight: 700; margin-bottom: 3px; }
-  .stripe-body { font-size: 11px; color: var(--gray-600); line-height: 1.5; }
-
-  /* ── ATAI inline table ── */
-  .atai-inline-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
-  .atai-inline-table th { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; padding: 5px 8px; border-bottom: 1px solid var(--gray-200); text-align: left; }
-  .atai-inline-table td { padding: 6px 8px; border-bottom: 1px solid var(--gray-100); }
-  .atai-inline-table tr:last-child td { border-bottom: none; }
+/* ATAI inline table */
+.atai-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 6px; }
+.atai-table th { font-size: 10px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; padding: 5px 8px; border-bottom: 1px solid var(--gray-200); text-align: left; }
+.atai-table td { padding: 6px 8px; border-bottom: 1px solid var(--gray-100); }
+.atai-table tr:last-child td { border-bottom: none; }
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div class="header-left">
+  <div>
     <div class="logo">Sam<span>sara</span></div>
-    <div class="header-title">Quality Insights — Capacity Calculator</div>
+    <div class="header-title">Quality Intelligence — Capacity Calculator</div>
   </div>
-  <div class="header-badge">INTERNAL DRAFT</div>
+  <div class="header-badge">INTERNAL</div>
 </div>
 
 <div class="container">
   <div class="tabs">
-    <button class="tab active" onclick="showTab('current')">Current baseline</button>
-    <button class="tab" onclick="showTab('future')">Future state</button>
-    <button class="tab" onclick="showTab('compare')">Comparison</button>
-    <button class="tab" onclick="showTab('time')">Time budget</button>
+    <button class="tab active" onclick="showTab('current',this)">Current Baseline</button>
+    <button class="tab" onclick="showTab('future',this)">Future State</button>
+    <button class="tab" onclick="showTab('compare',this)">Comparison</button>
+    <button class="tab" onclick="showTab('time',this)">Time Budget</button>
+    <button class="tab" onclick="showTab('defense',this)">QA as Third Layer</button>
   </div>
 
   <!-- ══════════════════════════════════════════════
@@ -199,57 +213,76 @@
   <div id="tab-current" class="sec active">
 
     <div class="card">
-      <div class="card-title">ATAI — current weekly targets by role</div>
-      <p style="font-size:12px;color:var(--gray-600);margin-bottom:12px">Supervisors/Managers and QA Analysts both have assigned ATAI targets today. Enter actual weekly volumes.</p>
-      <table class="atai-inline-table">
-        <thead><tr><th>LOB</th><th>Supervisor / Manager /wk</th><th>Quality Analyst /wk</th><th>Total /wk</th><th>Min / audit</th></tr></thead>
+      <div class="card-title">ATAI — current weekly audit targets by role</div>
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:10px">Managers and QA Analysts both carry ATAI targets today. Enter actual weekly volumes per queue.</p>
+      <table class="atai-table">
+        <thead>
+          <tr>
+            <th>Queue</th>
+            <th>Monthly ticket volume</th>
+            <th>Manager / wk</th>
+            <th>QA Analyst / wk</th>
+            <th>Total / wk</th>
+            <th>Min / audit</th>
+          </tr>
+        </thead>
         <tbody>
           <tr>
-            <td><strong style="color:#2563EB">● L1 Customer Support</strong></td>
-            <td><input class="inline-inp" type="number" id="cur-cs-mgr" value="35" min="0" oninput="calc()"></td>
-            <td><input class="inline-inp" type="number" id="cur-cs-qa" value="35" min="0" oninput="calc()"></td>
-            <td id="cur-cs-tot" style="font-weight:700">70</td>
-            <td rowspan="2" style="vertical-align:middle"><input class="inline-inp" type="number" id="t-atai" value="15" min="1" max="60" oninput="calc()"> min</td>
+            <td class="q-cs">● L1 Customer Support</td>
+            <td><input class="inline-inp" type="number" id="c-cs-vol" value="4500" oninput="calcCurrent()"></td>
+            <td><input class="inline-inp" type="number" id="c-cs-mgr" value="35" oninput="calcCurrent()"></td>
+            <td><input class="inline-inp" type="number" id="c-cs-qa" value="35" oninput="calcCurrent()"></td>
+            <td id="c-cs-tot" style="font-weight:700">70</td>
+            <td rowspan="3" style="vertical-align:middle"><input class="inline-inp" type="number" id="c-t-atai" value="15" min="1" max="60" oninput="calcCurrent()"> min</td>
           </tr>
           <tr>
-            <td><strong style="color:#059669">● L1 Technical Support</strong></td>
-            <td><input class="inline-inp" type="number" id="cur-ts-mgr" value="70" min="0" oninput="calc()"></td>
-            <td><input class="inline-inp" type="number" id="cur-ts-qa" value="80" min="0" oninput="calc()"></td>
-            <td id="cur-ts-tot" style="font-weight:700">150</td>
+            <td class="q-ts">● L1 Technical Support</td>
+            <td><input class="inline-inp" type="number" id="c-ts-vol" value="11400" oninput="calcCurrent()"></td>
+            <td><input class="inline-inp" type="number" id="c-ts-mgr" value="70" oninput="calcCurrent()"></td>
+            <td><input class="inline-inp" type="number" id="c-ts-qa" value="80" oninput="calcCurrent()"></td>
+            <td id="c-ts-tot" style="font-weight:700">150</td>
           </tr>
           <tr>
-            <td colspan="5"><div id="cur-atai-summary" style="font-size:11px;color:var(--gray-400);padding-top:4px"></div></td>
+            <td class="q-l2">● L2 Technical Support</td>
+            <td><input class="inline-inp" type="number" id="c-l2-vol" value="400" oninput="calcCurrent()"></td>
+            <td><input class="inline-inp" type="number" id="c-l2-mgr" value="0" oninput="calcCurrent()"></td>
+            <td><input class="inline-inp" type="number" id="c-l2-qa" value="0" oninput="calcCurrent()"></td>
+            <td id="c-l2-tot" style="font-weight:700">0</td>
           </tr>
         </tbody>
       </table>
+      <div id="c-atai-summary" style="font-size:11px;color:var(--gray-400);margin-top:6px"></div>
     </div>
 
     <div class="grid2">
       <div class="card" style="border-color:#FECACA">
-        <div class="card-title" style="color:var(--red-text)">DSAT reviews — 100% manual (Managers)</div>
-        <div class="field"><label>L1 Customer Support — DSATs / month</label><input type="number" id="cur-dsat-cs" value="256" oninput="calc()"></div>
-        <div class="field"><label>L1 Technical Support — DSATs / month</label><input type="number" id="cur-dsat-ts" value="664" oninput="calc()"></div>
-        <div class="field"><label>L2 Technical Support — DSATs / month</label><input type="number" id="cur-dsat-l2" value="134" oninput="calc()"></div>
-        <div class="field"><label>L2 Renewals — DSATs / month</label><input type="number" id="cur-dsat-rn" value="0" oninput="calc()"></div>
-        <div class="divider"></div>
-        <div class="field"><label>Time per DSAT review (min)</label><input type="number" id="t-dsat" value="12" min="1" max="60" oninput="calc()"></div>
+        <div class="card-title" style="color:var(--red-text)">DSAT reviews — 100% manual</div>
+        <div class="grid3">
+          <div class="field"><label class="q-cs">L1 CS — / month</label><input type="number" id="c-dsat-cs" value="256" oninput="calcCurrent()"></div>
+          <div class="field"><label class="q-ts">L1 TS — / month</label><input type="number" id="c-dsat-ts" value="664" oninput="calcCurrent()"></div>
+          <div class="field"><label class="q-l2">L2 TS — / month</label><input type="number" id="c-dsat-l2" value="134" oninput="calcCurrent()"></div>
+        </div>
+        <div class="field"><label>Time per DSAT review (min)</label><input type="number" id="c-t-dsat" value="12" min="1" max="60" oninput="calcCurrent()"></div>
         <div class="note">Owned by Supervisors/Managers · 100% coverage · 72hr SLA</div>
       </div>
 
       <div>
-        <div class="card" style="border-color:#A7F3D0;margin-bottom:16px">
+        <div class="card" style="border-color:#A7F3D0;margin-bottom:14px">
           <div class="card-title" style="color:var(--green-text)">THF reviews — 100% QA · 72hr SLA</div>
-          <div class="field"><label>L1 Customer Support — THF submissions / month</label><input type="number" id="thf-cs" value="11" oninput="calc()"></div>
-          <div class="field"><label>L1 Technical Support — THF submissions / month</label><input type="number" id="thf-ts" value="20" oninput="calc()"></div>
-          <div class="field"><label>Time per THF review (min)</label><input type="number" id="t-thf" value="10" min="1" max="60" oninput="calc()"></div>
+          <div class="grid2">
+            <div class="field"><label class="q-cs">L1 CS THF / month</label><input type="number" id="c-thf-cs" value="11" oninput="calcCurrent()"></div>
+            <div class="field"><label class="q-ts">L1 TS THF / month</label><input type="number" id="c-thf-ts" value="20" oninput="calcCurrent()"></div>
+          </div>
+          <div class="field"><label>Time per THF review (min)</label><input type="number" id="c-t-thf" value="10" min="1" max="60" oninput="calcCurrent()"></div>
         </div>
         <div class="card" style="border-color:#FDE68A">
           <div class="card-title" style="color:var(--amber-text)">ATA — Audit the Auditor (current fixed targets)</div>
-          <div class="grid2">
-            <div class="field"><label>L1 CS — audits / week</label><input type="number" id="ata-cs" value="4" min="0" oninput="calc()"></div>
-            <div class="field"><label>L1 TS — audits / week</label><input type="number" id="ata-ts" value="7" min="0" oninput="calc()"></div>
+          <div class="grid3">
+            <div class="field"><label class="q-cs">L1 CS / wk</label><input type="number" id="c-ata-cs" value="4" min="0" oninput="calcCurrent()"></div>
+            <div class="field"><label class="q-ts">L1 TS / wk</label><input type="number" id="c-ata-ts" value="7" min="0" oninput="calcCurrent()"></div>
+            <div class="field"><label class="q-l2">L2 TS / wk</label><input type="number" id="c-ata-l2" value="0" min="0" oninput="calcCurrent()"></div>
           </div>
-          <div class="field"><label>Time per ATA audit (min)</label><input type="number" id="t-ata" value="15" min="1" max="60" oninput="calc()"></div>
+          <div class="field"><label>Time per ATA audit (min)</label><input type="number" id="c-t-ata" value="15" min="1" max="60" oninput="calcCurrent()"></div>
         </div>
       </div>
     </div>
@@ -258,9 +291,17 @@
       <div class="card-title">Current state — weekly hours by role</div>
       <div class="kpi-grid" id="cur-kpis"></div>
       <table>
-        <thead><tr><th>Workstream</th><th class="role-mgr">Manager hrs/wk</th><th class="role-qa">QA hrs/wk</th><th>Total hrs/wk</th><th>Volume/wk</th></tr></thead>
+        <thead><tr><th>Workstream</th><th style="color:#2563EB">Manager hrs/wk</th><th style="color:#059669">QA hrs/wk</th><th>Total hrs/wk</th><th>Volume/wk</th></tr></thead>
         <tbody id="cur-tbody"></tbody>
         <tfoot id="cur-tfoot"></tfoot>
+      </table>
+    </div>
+
+    <div class="card shaded">
+      <div class="card-title">Current state — queue coverage</div>
+      <table>
+        <thead><tr><th>Queue</th><th>Monthly vol.</th><th>ATAI audits/wk</th><th>DSAT/mo</th><th>ATA/wk</th><th>ATAI coverage</th></tr></thead>
+        <tbody id="cur-queue-tbody"></tbody>
       </table>
     </div>
   </div>
@@ -269,81 +310,107 @@
        TAB 2 — FUTURE STATE
   ══════════════════════════════════════════════ -->
   <div id="tab-future" class="sec">
-    <div class="card">
-      <div class="card-title">Future state settings — AI-first model</div>
-      <div class="grid3">
 
-        <!-- ATAI -->
+    <div class="card">
+      <div class="card-title">ATAI — future state: statistical sample (QA-only)</div>
+      <div class="grid2">
         <div>
-          <div class="section-head"><span class="pip" style="background:var(--navy)"></span>ATAI — statistical sample</div>
-          <div class="field"><label>L1 CS ticket vol. / month</label><input type="number" id="fut-cs-t" value="4500" oninput="calc()"></div>
-          <div class="field"><label>L1 TS ticket vol. / month</label><input type="number" id="fut-ts-t" value="11400" oninput="calc()"></div>
-          <div class="field"><label>L2 TS ticket vol. / month</label><input type="number" id="fut-l2-t" value="400" oninput="calc()"></div>
-          <div class="field"><label>L2 Renewals vol. / month</label><input type="number" id="fut-rn-t" value="200" oninput="calc()"></div>
-          <div class="divider"></div>
-          <div class="field"><label>Confidence level</label>
-            <select id="fut-conf" onchange="calc()">
+          <div class="section-head"><span class="pip" style="background:var(--navy)"></span>Ticket volumes / month</div>
+          <div class="grid3" style="margin-bottom:4px">
+            <div class="field"><label class="q-cs">L1 CS vol.</label><input type="number" id="f-cs-vol" value="4500" oninput="calcFuture()"></div>
+            <div class="field"><label class="q-ts">L1 TS vol.</label><input type="number" id="f-ts-vol" value="11400" oninput="calcFuture()"></div>
+            <div class="field"><label class="q-l2">L2 TS vol.</label><input type="number" id="f-l2-vol" value="400" oninput="calcFuture()"></div>
+          </div>
+          <div class="field"><label>Time per ATAI audit (min)</label><input type="number" id="f-t-atai" value="15" min="1" max="60" oninput="calcFuture()"></div>
+        </div>
+        <div>
+          <div class="section-head"><span class="pip" style="background:var(--teal)"></span>Sampling parameters — applied per queue</div>
+          <div class="field">
+            <label>Confidence level</label>
+            <select id="f-conf" onchange="calcFuture()">
               <option value="1.645">90% (Z = 1.645)</option>
               <option value="1.96" selected>95% (Z = 1.96) — recommended</option>
               <option value="2.576">99% (Z = 2.576)</option>
             </select>
           </div>
-          <div class="field"><label>Margin of error</label>
-            <select id="fut-moe" onchange="calc()">
+          <div class="field">
+            <label>Margin of error</label>
+            <select id="f-moe" onchange="calcFuture()">
               <option value="0.07">±7% (minimum)</option>
               <option value="0.05" selected>±5% (recommended)</option>
               <option value="0.03">±3% (strict)</option>
             </select>
           </div>
-          <div class="field"><label>Assumed AI accuracy p (%)</label>
-            <input type="number" id="fut-p" value="90" min="50" max="99" oninput="calc()">
-            <div class="hint">Use your actual ATAI pass rate</div>
+          <div class="field">
+            <label>Assumed AI accuracy p (%)</label>
+            <input type="number" id="f-p" value="90" min="50" max="99" oninput="calcFuture()">
+            <div class="hint">Use actual AutoQA pass rate (e.g. 90 = 90% accurate)</div>
           </div>
         </div>
+      </div>
+      <div id="f-atai-summary" style="font-size:11px;color:var(--gray-400);margin-top:4px"></div>
+    </div>
 
-        <!-- DSAT -->
-        <div>
-          <div class="section-head"><span class="pip" style="background:#DC2626"></span>DSAT — AI-first</div>
-          <div class="field"><label>L1 CS — DSATs / month</label><input type="number" id="fut-dsat-cs" value="256" oninput="calc()"></div>
-          <div class="field"><label>L1 TS — DSATs / month</label><input type="number" id="fut-dsat-ts" value="664" oninput="calc()"></div>
-          <div class="field"><label>L2 TS — DSATs / month</label><input type="number" id="fut-dsat-l2" value="134" oninput="calc()"></div>
-          <div class="field"><label>L2 Renewals — DSATs / month</label><input type="number" id="fut-dsat-rn" value="0" oninput="calc()"></div>
-          <div class="divider"></div>
-          <div class="field"><label>AI triage rate — % AI handles end-to-end</label>
-            <div style="display:flex;gap:8px;align-items:center;margin-top:4px">
-              <input type="range" min="0" max="95" step="5" value="70" id="fut-ai" style="flex:1" oninput="document.getElementById('fut-ai-pct').textContent=this.value+'%';calc()">
-              <span id="fut-ai-pct" style="font-size:14px;font-weight:700;min-width:36px;color:var(--navy)">70%</span>
-            </div>
-            <div class="hint">0% = fully manual · 70% = target · 95% = near-full AI</div>
+    <div class="grid2">
+      <div class="card" style="border-color:#FECACA">
+        <div class="card-title" style="color:var(--red-text)">DSAT reviews — AI-first</div>
+        <div class="grid3" style="margin-bottom:6px">
+          <div class="field"><label class="q-cs">L1 CS / month</label><input type="number" id="f-dsat-cs" value="256" oninput="calcFuture()"></div>
+          <div class="field"><label class="q-ts">L1 TS / month</label><input type="number" id="f-dsat-ts" value="664" oninput="calcFuture()"></div>
+          <div class="field"><label class="q-l2">L2 TS / month</label><input type="number" id="f-dsat-l2" value="134" oninput="calcFuture()"></div>
+        </div>
+        <div class="field">
+          <label>AI triage rate — % AI handles end-to-end</label>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:3px">
+            <input type="range" min="0" max="95" step="5" value="70" id="f-ai" style="flex:1" oninput="document.getElementById('f-ai-pct').textContent=this.value+'%';calcFuture()">
+            <span id="f-ai-pct" style="font-size:14px;font-weight:700;min-width:36px;color:var(--navy)">70%</span>
           </div>
-          <div class="field"><label>Spot-check confidence</label>
-            <select id="fut-dconf" onchange="calc()">
+          <div class="hint">0% = fully manual · 70% = target · 95% = near-full AI</div>
+        </div>
+        <div class="grid2">
+          <div class="field">
+            <label>Spot-check confidence</label>
+            <select id="f-dconf" onchange="calcFuture()">
               <option value="1.645">90%</option><option value="1.96" selected>95%</option><option value="2.576">99%</option>
             </select>
           </div>
-          <div class="field"><label>Spot-check margin of error</label>
-            <select id="fut-dmoe" onchange="calc()">
+          <div class="field">
+            <label>Spot-check margin of error</label>
+            <select id="f-dmoe" onchange="calcFuture()">
               <option value="0.07">±7%</option><option value="0.05" selected>±5%</option><option value="0.03">±3%</option>
             </select>
           </div>
         </div>
+        <div class="field"><label>Time per DSAT review (min)</label><input type="number" id="f-t-dsat" value="12" min="1" max="60" oninput="calcFuture()"></div>
+      </div>
 
-        <!-- ATA + Governance -->
-        <div>
-          <div class="section-head"><span class="pip" style="background:var(--amber)"></span>ATA + Governance</div>
-          <div class="field"><label>ATA rate (% of manually audited volume)</label>
-            <input type="number" id="fut-ata-rate" value="10" min="0" max="50" oninput="calc()">
+      <div>
+        <div class="card" style="border-color:#A7F3D0;margin-bottom:14px">
+          <div class="card-title" style="color:var(--green-text)">THF reviews — 100% QA · 72hr SLA</div>
+          <div class="grid2">
+            <div class="field"><label class="q-cs">L1 CS THF / month</label><input type="number" id="f-thf-cs" value="11" oninput="calcFuture()"></div>
+            <div class="field"><label class="q-ts">L1 TS THF / month</label><input type="number" id="f-thf-ts" value="20" oninput="calcFuture()"></div>
+          </div>
+          <div class="field"><label>Time per THF review (min)</label><input type="number" id="f-t-thf" value="10" min="1" max="60" oninput="calcFuture()"></div>
+        </div>
+        <div class="card" style="border-color:#FDE68A">
+          <div class="card-title" style="color:var(--amber-text)">ATA + Governance</div>
+          <div class="field">
+            <label>ATA rate (% of manually audited volume)</label>
+            <input type="number" id="f-ata-rate" value="10" min="0" max="50" oninput="calcFuture()">
             <div class="hint">Applied to ATAI + QA-handled DSAT + disputes</div>
           </div>
-          <div class="field"><label>Dispute rate (% of ATAI volume disputed)</label>
-            <input type="number" id="fut-disp" value="9" min="0" max="25" oninput="calc()">
+          <div class="grid2">
+            <div class="field">
+              <label>Dispute rate (% of ATAI vol. disputed)</label>
+              <input type="number" id="f-disp-rate" value="9" min="0" max="25" oninput="calcFuture()">
+            </div>
+            <div class="field">
+              <label>Time per dispute review (min)</label>
+              <input type="number" id="f-t-disp" value="20" min="1" max="60" oninput="calcFuture()">
+            </div>
           </div>
-          <div class="field"><label>Time per dispute review (min)</label>
-            <input type="number" id="t-disp" value="20" min="1" max="60" oninput="calc()">
-          </div>
-          <div class="divider"></div>
-          <div class="section-head" style="margin-top:4px"><span class="pip" style="background:var(--green)"></span>THF</div>
-          <div class="note">THF remains 100% QA coverage. Volumes carried from current baseline inputs.</div>
+          <div class="field"><label>Time per ATA audit (min)</label><input type="number" id="f-t-ata" value="15" min="1" max="60" oninput="calcFuture()"></div>
         </div>
       </div>
     </div>
@@ -355,6 +422,14 @@
         <thead><tr><th>Workstream</th><th>Owner</th><th>Vol/wk</th><th>Min/unit</th><th>Hrs/wk</th><th style="min-width:80px">% of load</th></tr></thead>
         <tbody id="fut-tbody"></tbody>
         <tfoot id="fut-tfoot"></tfoot>
+      </table>
+    </div>
+
+    <div class="card shaded">
+      <div class="card-title">Future state — queue coverage (ATAI statistical sample)</div>
+      <table>
+        <thead><tr><th>Queue</th><th>Monthly vol.</th><th>Stat. sample / mo</th><th>Sample / wk</th><th>Coverage %</th><th>DSAT / mo</th></tr></thead>
+        <tbody id="fut-queue-tbody"></tbody>
       </table>
     </div>
   </div>
@@ -373,12 +448,20 @@
     </div>
     <div class="card">
       <div class="card-title">Hours per FTE — current vs future</div>
-      <p style="font-size:11px;color:var(--gray-400);margin-bottom:6px">Current QA workload / FTE</p>
+      <p style="font-size:11px;color:var(--gray-400);margin-bottom:5px">Current QA workload / FTE</p>
       <div class="stacked-track" id="stk-cur"></div>
       <div class="stacked-legend" id="leg-cur"></div>
-      <p style="font-size:11px;color:var(--gray-400);margin-bottom:6px;margin-top:8px">Future QA workload / FTE</p>
+      <p style="font-size:11px;color:var(--gray-400);margin-bottom:5px;margin-top:8px">Future QA workload / FTE</p>
       <div class="stacked-track" id="stk-fut"></div>
       <div class="stacked-legend" id="leg-fut"></div>
+    </div>
+    <div class="card shaded">
+      <div class="card-title">FTE scenarios — sensitivity to AI DSAT triage rate</div>
+      <table>
+        <thead><tr><th>Scenario</th><th>QA audit hrs/wk</th><th>Audit hrs/FTE avail.</th><th>QA FTEs needed</th><th>vs current baseline</th></tr></thead>
+        <tbody id="fte-scenarios"></tbody>
+      </table>
+      <div class="note" id="fte-note" style="margin-top:8px"></div>
     </div>
     <div class="note" id="cmp-note"></div>
   </div>
@@ -388,50 +471,47 @@
   ══════════════════════════════════════════════ -->
   <div id="tab-time" class="sec">
     <div class="card">
-      <div class="card-title">Working hours per FTE per week</div>
-      <div class="budget-row" style="margin-bottom:12px">
+      <div class="card-title">Working hours per FTE per week — non-audit time</div>
+      <div class="budget-row" style="margin-bottom:10px">
         <span class="budget-label" style="font-weight:600;color:var(--navy)">Total contracted hours / week</span>
-        <input class="budget-inp" type="number" id="wk-total" value="40" min="20" max="60" oninput="calc()">
+        <input class="budget-inp" type="number" id="wk-total" value="40" min="20" max="60" oninput="calcTimeBudget()">
         <span class="budget-unit">hrs</span>
         <div class="budget-bar-track"><div class="budget-bar-fill" style="background:var(--navy);width:100%">40h</div></div>
       </div>
       <div class="divider"></div>
-      <p style="font-size:11px;color:var(--gray-400);margin-bottom:12px">Enter non-audit time per FTE. Audit-available hours = what remains.</p>
+      <p style="font-size:11px;color:var(--gray-400);margin-bottom:10px">Enter non-audit time per FTE. Audit-available hours = what remains.</p>
 
-      <div class="budget-section">
+      <div style="margin-bottom:4px">
         <div class="budget-row">
           <span class="budget-label"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#64748B;margin-right:6px;vertical-align:-1px"></span>Meetings &amp; syncs</span>
-          <input class="budget-inp" type="number" id="t-mtg" value="4" min="0" max="20" oninput="calc()">
+          <input class="budget-inp" type="number" id="t-mtg" value="4" min="0" max="20" oninput="calcTimeBudget()">
           <span class="budget-unit">hrs</span>
           <div class="budget-bar-track"><div class="budget-bar-fill" id="bbar-mtg" style="background:#64748B"></div></div>
         </div>
         <p class="sub-hint">Team meetings, supervisor syncs, calibrations, 1:1s</p>
       </div>
-
-      <div class="budget-section">
+      <div style="margin-bottom:4px">
         <div class="budget-row">
           <span class="budget-label"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--teal);margin-right:6px;vertical-align:-1px"></span>Project &amp; improvement work</span>
-          <input class="budget-inp" type="number" id="t-proj" value="6" min="0" max="20" oninput="calc()">
+          <input class="budget-inp" type="number" id="t-proj" value="6" min="0" max="20" oninput="calcTimeBudget()">
           <span class="budget-unit">hrs</span>
           <div class="budget-bar-track"><div class="budget-bar-fill" id="bbar-proj" style="background:var(--teal)"></div></div>
         </div>
         <p class="sub-hint">AutoQA expansion, reporting, AI tooling, continuous improvement</p>
       </div>
-
-      <div class="budget-section">
+      <div style="margin-bottom:4px">
         <div class="budget-row">
           <span class="budget-label"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--amber);margin-right:6px;vertical-align:-1px"></span>Admin &amp; reactive work</span>
-          <input class="budget-inp" type="number" id="t-admin" value="4" min="0" max="20" oninput="calc()">
+          <input class="budget-inp" type="number" id="t-admin" value="4" min="0" max="20" oninput="calcTimeBudget()">
           <span class="budget-unit">hrs</span>
           <div class="budget-bar-track"><div class="budget-bar-fill" id="bbar-admin" style="background:var(--amber)"></div></div>
         </div>
         <p class="sub-hint">Email, Slack, Jira, ad-hoc asks, unplanned interruptions</p>
       </div>
-
-      <div class="budget-section">
+      <div style="margin-bottom:10px">
         <div class="budget-row">
           <span class="budget-label"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#7C3AED;margin-right:6px;vertical-align:-1px"></span>Learning &amp; development</span>
-          <input class="budget-inp" type="number" id="t-ld" value="2" min="0" max="20" oninput="calc()">
+          <input class="budget-inp" type="number" id="t-ld" value="2" min="0" max="20" oninput="calcTimeBudget()">
           <span class="budget-unit">hrs</span>
           <div class="budget-bar-track"><div class="budget-bar-fill" id="bbar-ld" style="background:#7C3AED"></div></div>
         </div>
@@ -441,241 +521,614 @@
       <div class="divider"></div>
       <div class="budget-row">
         <span class="budget-label" style="font-weight:700;color:var(--navy)"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--navy);margin-right:6px;vertical-align:-1px"></span>Audit-available hours / FTE / week</span>
-        <span id="avail-disp" style="font-size:18px;font-weight:700;color:var(--navy);min-width:62px;text-align:right">24 hrs</span>
+        <span id="avail-disp" style="font-size:18px;font-weight:700;color:var(--navy);min-width:58px;text-align:right">24 hrs</span>
         <span class="budget-unit"></span>
         <div class="budget-bar-track"><div class="budget-bar-fill" id="bbar-audit" style="background:var(--navy)"></div></div>
       </div>
-      <div id="time-note" class="note" style="margin-top:10px"></div>
+      <div id="time-note" class="note" style="margin-top:8px"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       TAB 5 — QA AS THIRD LAYER OF DEFENSE
+  ══════════════════════════════════════════════ -->
+  <div id="tab-defense" class="sec">
+
+    <div class="card" style="border-color:var(--teal)">
+      <div class="card-title">The three-layer model</div>
+      <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;line-height:1.6">
+        As AutoQA matures, the QA team's role shifts from <strong>primary auditor</strong> to <strong>validator of AI</strong>. Each layer is a distinct defense against quality failure, with humans operating at the highest-signal point — auditing the auditor, not raw tickets.
+      </p>
+
+      <div class="flow-row">
+        <div class="flow-box" style="border-color:var(--teal)">
+          <div class="flow-box-label">All tickets</div>
+          <div class="flow-box-title">100% volume</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="border-color:var(--teal)">
+          <div class="flow-box-label">Layer 1</div>
+          <div class="flow-box-title" style="color:var(--teal)">AI (AutoQA)</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="border-color:var(--amber)">
+          <div class="flow-box-label">Layer 2</div>
+          <div class="flow-box-title" style="color:var(--amber)">AI Audit Bot</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box" style="border-color:var(--green)">
+          <div class="flow-box-label">Layer 3</div>
+          <div class="flow-box-title" style="color:var(--green)">QA (HITL)</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box">
+          <div class="flow-box-label">Output</div>
+          <div class="flow-box-title">Validated scores + coaching signals</div>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="layer-card l1">
+          <div class="layer-num">Layer 1 — First defense</div>
+          <div class="layer-title">AI Analysis (AutoQA)</div>
+          <div class="layer-body">
+            <ul>
+              <li>Scores 100% of ticket volume against QA rubric</li>
+              <li>No sampling — full population coverage per queue</li>
+              <li>Identifies DSAT drivers, behavior patterns, policy gaps</li>
+              <li>Produces a scored dataset for all downstream layers</li>
+              <li><strong>Human involvement: none at this layer</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="layer-card l2">
+          <div class="layer-num">Layer 2 — Second defense</div>
+          <div class="layer-title">AI Audit Bot (spot-check)</div>
+          <div class="layer-body">
+            <ul>
+              <li>Independent AI re-grades a statistically significant sample of Layer 1 scores</li>
+              <li>Sample sized using Cochran formula per queue (confidence + margin of error)</li>
+              <li>Surfaces model drift, calibration gaps, prompt failures, edge-case errors</li>
+              <li>Produces an accuracy rate and disagreement log for QA review</li>
+              <li><strong>Human involvement: none — fully automated</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="layer-card l3">
+          <div class="layer-num">Layer 3 — Human in the loop</div>
+          <div class="layer-title">QA Team (HITL)</div>
+          <div class="layer-body">
+            <ul>
+              <li>Reviews Layer 2 disagreements and high-signal flagged cases</li>
+              <li>Maintains statistical significance at the human-review level per queue</li>
+              <li>Owns calibration decisions, rubric updates, and override authority</li>
+              <li>Outputs coaching signals and model recalibration triggers</li>
+              <li><strong>Human involvement: focused, high-judgment, lower volume</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="card">
-      <div class="card-title">FTE requirement — scenario comparison</div>
-      <table>
-        <thead><tr><th>Scenario</th><th>QA audit hrs/wk</th><th>Audit hrs/FTE avail.</th><th>QA FTEs needed</th><th>vs current baseline</th></tr></thead>
-        <tbody id="fte-scenarios"></tbody>
-      </table>
-      <div class="note" id="fte-note" style="margin-top:10px"></div>
+      <div class="card-title">Third layer — capacity calculator</div>
+      <p style="font-size:12px;color:var(--gray-600);margin-bottom:12px">Configure the Layer 2 audit sample and estimate QA (Layer 3) review load per queue. Sample sizes calculated using the Cochran formula.</p>
+
+      <div class="grid2">
+        <div>
+          <div class="section-head"><span class="pip" style="background:var(--teal)"></span>Layer 1 — AI output volume (tickets scored / month)</div>
+          <div class="grid3" style="margin-bottom:8px">
+            <div class="field"><label class="q-cs">L1 CS vol.</label><input type="number" id="d-cs-vol" value="4500" oninput="calcDefense()"></div>
+            <div class="field"><label class="q-ts">L1 TS vol.</label><input type="number" id="d-ts-vol" value="11400" oninput="calcDefense()"></div>
+            <div class="field"><label class="q-l2">L2 TS vol.</label><input type="number" id="d-l2-vol" value="400" oninput="calcDefense()"></div>
+          </div>
+
+          <div class="section-head"><span class="pip" style="background:var(--amber)"></span>Layer 2 — AI Audit Bot sample parameters</div>
+          <div class="field">
+            <label>Confidence level (Layer 2)</label>
+            <select id="d-l2-conf" onchange="calcDefense()">
+              <option value="1.645">90%</option>
+              <option value="1.96" selected>95% — recommended</option>
+              <option value="2.576">99%</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Margin of error (Layer 2)</label>
+            <select id="d-l2-moe" onchange="calcDefense()">
+              <option value="0.07">±7%</option>
+              <option value="0.05" selected>±5% — recommended</option>
+              <option value="0.03">±3%</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Assumed AI accuracy / pass rate (%)</label>
+            <input type="number" id="d-accuracy" value="90" min="50" max="99" oninput="calcDefense()">
+            <div class="hint">Used as p in Cochran formula for sample sizing</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="section-head"><span class="pip" style="background:var(--green)"></span>Layer 3 — QA HITL review parameters</div>
+          <div class="field">
+            <label>Confidence level (Layer 3 / QA)</label>
+            <select id="d-l3-conf" onchange="calcDefense()">
+              <option value="1.645">90%</option>
+              <option value="1.96" selected>95% — recommended</option>
+              <option value="2.576">99%</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Margin of error (Layer 3 / QA)</label>
+            <select id="d-l3-moe" onchange="calcDefense()">
+              <option value="0.07">±7%</option>
+              <option value="0.05" selected>±5% — recommended</option>
+              <option value="0.03">±3%</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Time per QA review (min)</label>
+            <input type="number" id="d-qa-time" value="15" min="1" max="60" oninput="calcDefense()">
+          </div>
+          <div class="note teal" style="margin-top:10px">
+            Layer 3 samples from the Layer 2 output, not from the full ticket population. QA is auditing the AI auditor — reviewing disagreements and flagged cases, not raw tickets.
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="card shaded">
+      <div class="card-title">Layer 2 — AI Audit Bot: sample size by queue</div>
+      <div class="kpi-grid" id="d-l2-kpis"></div>
+      <table>
+        <thead><tr><th>Queue</th><th>L1 vol./mo</th><th>L2 sample/mo</th><th>L2 sample/wk</th><th>Coverage of L1</th></tr></thead>
+        <tbody id="d-l2-tbody"></tbody>
+        <tfoot id="d-l2-tfoot"></tfoot>
+      </table>
+    </div>
+
+    <div class="card shaded">
+      <div class="card-title">Layer 3 — QA HITL: review load by queue</div>
+      <div class="kpi-grid" id="d-l3-kpis"></div>
+      <table>
+        <thead><tr><th>Queue</th><th>L2 sample/mo (input)</th><th>L3 QA sample/mo</th><th>L3 QA sample/wk</th><th>QA hrs/mo</th><th>Coverage of L2</th></tr></thead>
+        <tbody id="d-l3-tbody"></tbody>
+        <tfoot id="d-l3-tfoot"></tfoot>
+      </table>
+      <div class="note" id="d-note" style="margin-top:8px"></div>
+    </div>
+
   </div>
 
 </div><!-- /container -->
 
 <script>
-function showTab(id){
+// ── Helpers ──────────────────────────────────────────────
+function showTab(id, btn){
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('tab-'+id).classList.add('active');
-  event.target.classList.add('active');
+  btn.classList.add('active');
 }
-function n(id){return parseFloat(document.getElementById(id).value)||0;}
-function fmt(v,d=0){return isNaN(v)||!isFinite(v)?'—':Number(v.toFixed(d)).toLocaleString();}
-function ataiN(N,Z,p,E){if(N<=0)return 0;const n0=(Z*Z*p*(1-p))/(E*E);return Math.ceil((n0*N)/(n0+N-1));}
-function kpi(label,val,sub,cls=''){return`<div class="kpi ${cls}"><div class="kl">${label}</div><div class="kv">${val}</div><div class="ks">${sub}</div></div>`;}
-function mkStacked(elId,legId,segs,total){
-  document.getElementById(elId).innerHTML=segs.map(s=>{
-    const w=total>0?Math.max(0,Math.min(s.hrs/total*100,100)):0;
-    return`<div class="stacked-seg" style="background:${s.color};width:${w.toFixed(1)}%">${w>6?fmt(s.hrs,0)+'h':''}</div>`;
+function n(id){ return parseFloat(document.getElementById(id).value)||0; }
+function fmt(v,d=0){ return isNaN(v)||!isFinite(v)?'—':Number(v.toFixed(d)).toLocaleString(); }
+// Cochran sample size formula
+function cochran(N, Z, p, E){
+  if(N<=0||E<=0) return 0;
+  const n0 = (Z*Z*p*(1-p))/(E*E);
+  return Math.ceil((n0*N)/(n0+N-1));
+}
+function kpi(label,val,sub,cls=''){
+  return `<div class="kpi ${cls}"><div class="kl">${label}</div><div class="kv">${val}</div><div class="ks">${sub}</div></div>`;
+}
+function mkStacked(elId, legId, segs, total){
+  document.getElementById(elId).innerHTML = segs.map(s=>{
+    const w = total>0 ? Math.max(0,Math.min(s.hrs/total*100,100)) : 0;
+    return `<div class="stacked-seg" style="background:${s.color};width:${w.toFixed(1)}%">${w>6?fmt(s.hrs,0)+'h':''}</div>`;
   }).join('');
-  document.getElementById(legId).innerHTML=segs.map(s=>
+  document.getElementById(legId).innerHTML = segs.map(s=>
     `<span><span class="leg-dot" style="background:${s.color}"></span>${s.label} ${fmt(s.hrs,1)}h</span>`
   ).join('');
 }
+function barFill(id, val, total, color){
+  const el = document.getElementById(id);
+  const pct = total>0 ? Math.min(val/total*100,100) : 0;
+  el.style.width = pct.toFixed(1)+'%';
+  el.textContent = val>0 ? val+'h' : '';
+}
 
-function calc(){
-  const WEEKS=4.33;
-  const wkT=n('wk-total'),tMtg=n('t-mtg'),tProj=n('t-proj'),tAdmin=n('t-admin'),tLd=n('t-ld');
-  const nonAudit=tMtg+tProj+tAdmin+tLd;
-  const auditAvail=Math.max(0,wkT-nonAudit);
+const WEEKS = 4.33;
+const Q_COLORS = { cs: '#2563EB', ts: '#059669', l2: '#7C3AED' };
+const Q_NAMES  = { cs: 'L1 Customer Support', ts: 'L1 Technical Support', l2: 'L2 Technical Support' };
 
-  // Budget bars
-  [{k:'mtg',c:'#64748B'},{k:'proj',c:'#00A8E0'},{k:'admin',c:'#F39C12'},{k:'ld',c:'#7C3AED'}].forEach(({k,c})=>{
-    const v=n('t-'+k),p=wkT>0?Math.min(v/wkT*100,100):0;
+// ── Time Budget (standalone) ─────────────────────────────
+function calcTimeBudget(){
+  const wkT = n('wk-total');
+  const tMtg=n('t-mtg'), tProj=n('t-proj'), tAdmin=n('t-admin'), tLd=n('t-ld');
+  const nonAudit = tMtg+tProj+tAdmin+tLd;
+  const auditAvail = Math.max(0, wkT-nonAudit);
+  [['mtg','#64748B'],['proj','var(--teal)'],['admin','var(--amber)'],['ld','#7C3AED']].forEach(([k,c])=>{
+    const v=n('t-'+k), p=wkT>0?Math.min(v/wkT*100,100):0;
     const el=document.getElementById('bbar-'+k);
     el.style.width=p.toFixed(1)+'%'; el.textContent=v>0?v+'h':'';
   });
-  const auditPct=wkT>0?Math.min(auditAvail/wkT*100,100):0;
+  const auditPct = wkT>0?Math.min(auditAvail/wkT*100,100):0;
   document.getElementById('bbar-audit').style.width=auditPct.toFixed(1)+'%';
   document.getElementById('avail-disp').textContent=auditAvail+' hrs';
-  document.getElementById('time-note').textContent=auditAvail<=0
-    ?'⚠ Non-audit allocations equal or exceed total hours — no audit capacity remains.'
-    :`Each FTE has ${auditAvail} hrs/week available for audits after ${nonAudit} hrs of non-audit time.`;
+  document.getElementById('time-note').textContent = auditAvail<=0
+    ? '⚠ Non-audit allocations equal or exceed total hours — no audit capacity remains.'
+    : `Each FTE has ${auditAvail} hrs/week available for audits after ${nonAudit} hrs of non-audit time (${fmt(auditAvail/wkT*100,0)}% of contracted hours).`;
+  return auditAvail;
+}
 
-  const tAtai=n('t-atai'),tDsat=n('t-dsat'),tThf=n('t-thf'),tAta=n('t-ata'),tDisp=n('t-disp');
+// ── Current Baseline ─────────────────────────────────────
+function calcCurrent(){
+  const tAtai = n('c-t-atai'), tDsat = n('c-t-dsat'), tThf = n('c-t-thf'), tAta = n('c-t-ata');
+  const auditAvail = calcTimeBudget();
 
-  // ── CURRENT ──
-  const cCsMgr=n('cur-cs-mgr'),cCsQa=n('cur-cs-qa'),cTsMgr=n('cur-ts-mgr'),cTsQa=n('cur-ts-qa');
-  const curAtaiMgrWk=cCsMgr+cTsMgr,curAtaiQaWk=cCsQa+cTsQa,curAtaiTotWk=curAtaiMgrWk+curAtaiQaWk;
-  document.getElementById('cur-cs-tot').textContent=fmt(cCsMgr+cCsQa);
-  document.getElementById('cur-ts-tot').textContent=fmt(cTsMgr+cTsQa);
-  document.getElementById('cur-atai-summary').textContent=`Total: ${fmt(curAtaiTotWk)}/week — Managers: ${fmt(curAtaiMgrWk)} · QAs: ${fmt(curAtaiQaWk)}`;
+  // ATAI
+  const cCsMgr=n('c-cs-mgr'), cCsQa=n('c-cs-qa');
+  const cTsMgr=n('c-ts-mgr'), cTsQa=n('c-ts-qa');
+  const cL2Mgr=n('c-l2-mgr'), cL2Qa=n('c-l2-qa');
+  document.getElementById('c-cs-tot').textContent = fmt(cCsMgr+cCsQa);
+  document.getElementById('c-ts-tot').textContent = fmt(cTsMgr+cTsQa);
+  document.getElementById('c-l2-tot').textContent = fmt(cL2Mgr+cL2Qa);
 
-  const curAtaiMgrHrs=curAtaiMgrWk*tAtai/60,curAtaiQaHrs=curAtaiQaWk*tAtai/60;
-  const curDsatMo=n('cur-dsat-cs')+n('cur-dsat-ts')+n('cur-dsat-l2')+n('cur-dsat-rn');
-  const curDsatWk=curDsatMo/WEEKS,curDsatHrs=curDsatWk*tDsat/60;
-  const thfMo=n('thf-cs')+n('thf-ts'),thfWk=thfMo/WEEKS,thfHrs=thfWk*tThf/60;
-  const curAtaWk=n('ata-cs')+n('ata-ts'),curAtaHrs=curAtaWk*tAta/60;
-  const curQaHrsWk=curAtaiQaHrs+thfHrs+curAtaHrs;
-  const curMgrHrsWk=curAtaiMgrHrs+curDsatHrs;
-  const curQaFtes=auditAvail>0?curQaHrsWk/auditAvail:Infinity;
-  const curQaFtesCeil=Math.ceil(curQaFtes*10)/10;
+  const curAtaiMgrWk = cCsMgr+cTsMgr+cL2Mgr;
+  const curAtaiQaWk  = cCsQa+cTsQa+cL2Qa;
+  const curAtaiTotWk = curAtaiMgrWk+curAtaiQaWk;
+  document.getElementById('c-atai-summary').textContent =
+    `Total: ${fmt(curAtaiTotWk)}/week — Managers: ${fmt(curAtaiMgrWk)} · QA Analysts: ${fmt(curAtaiQaWk)}`;
 
-  document.getElementById('cur-kpis').innerHTML=
-    kpi('Manager audit hrs/wk',fmt(curMgrHrsWk,1),'ATAI + DSAT (100% manual)')+
-    kpi('QA audit hrs/wk',fmt(curQaHrsWk,1),'ATAI + THF + ATA')+
-    kpi('Combined total hrs/wk',fmt(curMgrHrsWk+curQaHrsWk,1),'all roles')+
-    kpi('QA FTEs needed',fmt(curQaFtesCeil,1),'for current QA workload',curQaFtesCeil<=3?'good':curQaFtesCeil<=5?'info':curQaFtesCeil<=7?'warn':'bad');
+  const curAtaiMgrHrs = curAtaiMgrWk*tAtai/60;
+  const curAtaiQaHrs  = curAtaiQaWk*tAtai/60;
 
-  document.getElementById('cur-tbody').innerHTML=[
+  // DSAT (managers)
+  const dsatCsMo=n('c-dsat-cs'), dsatTsMo=n('c-dsat-ts'), dsatL2Mo=n('c-dsat-l2');
+  const curDsatMo = dsatCsMo+dsatTsMo+dsatL2Mo;
+  const curDsatWk = curDsatMo/WEEKS;
+  const curDsatHrs = curDsatWk*tDsat/60;
+
+  // THF
+  const thfMo = n('c-thf-cs')+n('c-thf-ts');
+  const thfWk = thfMo/WEEKS;
+  const thfHrs = thfWk*tThf/60;
+
+  // ATA
+  const curAtaWk = n('c-ata-cs')+n('c-ata-ts')+n('c-ata-l2');
+  const curAtaHrs = curAtaWk*tAta/60;
+
+  const curQaHrsWk  = curAtaiQaHrs+thfHrs+curAtaHrs;
+  const curMgrHrsWk = curAtaiMgrHrs+curDsatHrs;
+  const curQaFtes   = auditAvail>0 ? curQaHrsWk/auditAvail : Infinity;
+  const curQaFtesCeil = Math.ceil(curQaFtes*10)/10;
+
+  document.getElementById('cur-kpis').innerHTML =
+    kpi('Manager audit hrs/wk', fmt(curMgrHrsWk,1), 'ATAI + DSAT (100% manual)') +
+    kpi('QA audit hrs/wk', fmt(curQaHrsWk,1), 'ATAI + THF + ATA') +
+    kpi('Combined total hrs/wk', fmt(curMgrHrsWk+curQaHrsWk,1), 'all roles') +
+    kpi('QA FTEs needed', fmt(curQaFtesCeil,1), 'for current QA workload',
+        curQaFtesCeil<=3?'good':curQaFtesCeil<=5?'info':curQaFtesCeil<=7?'warn':'bad');
+
+  document.getElementById('cur-tbody').innerHTML = [
     {ws:'ATAI audits',note:`Mgr: ${fmt(curAtaiMgrWk)}/wk · QA: ${fmt(curAtaiQaWk)}/wk`,mH:curAtaiMgrHrs,qH:curAtaiQaHrs,vol:`${fmt(curAtaiTotWk)}/wk`},
     {ws:'DSAT reviews (100% manual)',note:'Managers only · 72hr SLA',mH:curDsatHrs,qH:0,vol:`${fmt(curDsatWk,1)}/wk`},
-    {ws:'THF reviews (100% QA)',note:'QA only · 72hr SLA',mH:0,qH:thfHrs,vol:`${fmt(thfWk,1)}/wk`},
-    {ws:'ATA — Audit the Auditor',note:`CS: ${fmt(n('ata-cs'))}/wk · TS: ${fmt(n('ata-ts'))}/wk`,mH:0,qH:curAtaHrs,vol:`${fmt(curAtaWk)}/wk`},
+    {ws:'THF reviews',note:'QA only · 72hr SLA',mH:0,qH:thfHrs,vol:`${fmt(thfWk,1)}/wk`},
+    {ws:'ATA — Audit the Auditor',note:`CS: ${fmt(n('c-ata-cs'))}/wk · TS: ${fmt(n('c-ata-ts'))}/wk · L2: ${fmt(n('c-ata-l2'))}/wk`,mH:0,qH:curAtaHrs,vol:`${fmt(curAtaWk)}/wk`},
   ].map(r=>`<tr>
     <td><strong>${r.ws}</strong><br><span style="font-size:10px;color:var(--gray-400)">${r.note}</span></td>
-    <td class="role-mgr">${r.mH>0?fmt(r.mH,1)+' hrs':'—'}</td>
-    <td class="role-qa">${r.qH>0?fmt(r.qH,1)+' hrs':'—'}</td>
+    <td style="color:#2563EB;font-weight:600">${r.mH>0?fmt(r.mH,1)+' hrs':'—'}</td>
+    <td style="color:#059669;font-weight:600">${r.qH>0?fmt(r.qH,1)+' hrs':'—'}</td>
     <td style="font-weight:600">${fmt(r.mH+r.qH,1)} hrs</td>
     <td>${r.vol}</td></tr>`).join('');
-  document.getElementById('cur-tfoot').innerHTML=`<tr class="tfoot-row">
-    <td>Total</td><td class="role-mgr">${fmt(curMgrHrsWk,1)} hrs</td>
-    <td class="role-qa">${fmt(curQaHrsWk,1)} hrs</td>
+  document.getElementById('cur-tfoot').innerHTML = `<tr class="tfoot-row">
+    <td>Total</td>
+    <td style="color:#2563EB">${fmt(curMgrHrsWk,1)} hrs</td>
+    <td style="color:#059669">${fmt(curQaHrsWk,1)} hrs</td>
     <td>${fmt(curMgrHrsWk+curQaHrsWk,1)} hrs</td><td>—</td></tr>`;
 
-  // ── FUTURE ──
-  const Z=parseFloat(document.getElementById('fut-conf').value);
-  const E=parseFloat(document.getElementById('fut-moe').value);
-  const p=n('fut-p')/100;
-  const Zd=parseFloat(document.getElementById('fut-dconf').value);
-  const Ed=parseFloat(document.getElementById('fut-dmoe').value);
-  const aiRate=parseInt(document.getElementById('fut-ai').value)/100;
-  const dispRate=n('fut-disp')/100;
-  const ataRate=n('fut-ata-rate')/100;
+  // Queue coverage table
+  const csVol=n('c-cs-vol'), tsVol=n('c-ts-vol'), l2Vol=n('c-l2-vol');
+  const totalVol = csVol+tsVol+l2Vol;
+  document.getElementById('cur-queue-tbody').innerHTML = [
+    {name:'L1 Customer Support',color:Q_COLORS.cs,vol:csVol,atai:cCsMgr+cCsQa,dsat:dsatCsMo,ata:n('c-ata-cs')},
+    {name:'L1 Technical Support',color:Q_COLORS.ts,vol:tsVol,atai:cTsMgr+cTsQa,dsat:dsatTsMo,ata:n('c-ata-ts')},
+    {name:'L2 Technical Support',color:Q_COLORS.l2,vol:l2Vol,atai:cL2Mgr+cL2Qa,dsat:dsatL2Mo,ata:n('c-ata-l2')},
+  ].map(q=>{
+    const covPct = q.vol>0 ? q.atai/(q.vol/WEEKS)*100 : 0;
+    return `<tr>
+      <td><span style="color:${q.color};font-weight:600">● ${q.name}</span></td>
+      <td>${fmt(q.vol)}/mo</td>
+      <td>${fmt(q.atai)}/wk</td>
+      <td>${fmt(q.dsat)}/mo</td>
+      <td>${fmt(q.ata)}/wk</td>
+      <td>
+        ${fmt(covPct,1)}%
+        <div class="bar-track" style="margin-top:2px"><div class="bar-fill" style="background:${q.color};width:${Math.min(covPct,100).toFixed(0)}%"></div></div>
+      </td></tr>`;
+  }).join('');
 
-  const futLobs=[
-    {t:n('fut-cs-t')},{t:n('fut-ts-t')},{t:n('fut-l2-t')},{t:n('fut-rn-t')}
+  // Stash for comparison
+  window._cur = { curAtaiMgrHrs, curAtaiQaHrs, curDsatHrs, thfHrs, curAtaHrs,
+    curQaHrsWk, curMgrHrsWk, curQaFtesCeil, curAtaiTotWk, curAtaWk, curDsatWk };
+  calcComparison();
+}
+
+// ── Future State ─────────────────────────────────────────
+function calcFuture(){
+  const Z  = parseFloat(document.getElementById('f-conf').value);
+  const E  = parseFloat(document.getElementById('f-moe').value);
+  const p  = n('f-p')/100;
+  const Zd = parseFloat(document.getElementById('f-dconf').value);
+  const Ed = parseFloat(document.getElementById('f-dmoe').value);
+  const aiRate   = parseInt(document.getElementById('f-ai').value)/100;
+  const dispRate = n('f-disp-rate')/100;
+  const ataRate  = n('f-ata-rate')/100;
+  const tAtai = n('f-t-atai'), tDsat = n('f-t-dsat'), tThf = n('f-t-thf');
+  const tAta  = n('f-t-ata'),  tDisp = n('f-t-disp');
+  const auditAvail = calcTimeBudget();
+
+  // Volumes
+  const csVol = n('f-cs-vol'), tsVol = n('f-ts-vol'), l2Vol = n('f-l2-vol');
+  const queues = [
+    {id:'cs', name:Q_NAMES.cs, color:Q_COLORS.cs, vol:csVol, dsat:n('f-dsat-cs')},
+    {id:'ts', name:Q_NAMES.ts, color:Q_COLORS.ts, vol:tsVol, dsat:n('f-dsat-ts')},
+    {id:'l2', name:Q_NAMES.l2, color:Q_COLORS.l2, vol:l2Vol, dsat:n('f-dsat-l2')},
   ];
-  let futAtaiVolWk=0,futAtaiHrsWk=0;
-  futLobs.forEach(l=>{
-    const s=ataiN(l.t,Z,p,E),perWk=Math.ceil(s/WEEKS);
-    futAtaiVolWk+=perWk; futAtaiHrsWk+=perWk*tAtai/60;
+
+  // ATAI stat samples per queue
+  let futAtaiVolWk=0, futAtaiHrsWk=0;
+  const queueSamples = queues.map(q=>{
+    const sample = cochran(q.vol, Z, p, E);
+    const perWk  = Math.ceil(sample/WEEKS);
+    futAtaiVolWk += perWk;
+    futAtaiHrsWk += perWk*tAtai/60;
+    return {...q, sample, perWk};
   });
 
-  const futDsatMo=n('fut-dsat-cs')+n('fut-dsat-ts')+n('fut-dsat-l2')+n('fut-dsat-rn');
-  const futDsatWkTotal=futDsatMo/WEEKS;
-  let futDsatVolWk,futDsatHrsWk;
+  // DSAT
+  const futDsatMo = queues.reduce((s,q)=>s+q.dsat, 0);
+  const futDsatWkTotal = futDsatMo/WEEKS;
+  let futDsatVolWk, futDsatHrsWk;
   if(aiRate===0){
-    futDsatVolWk=futDsatWkTotal; futDsatHrsWk=futDsatVolWk*tDsat/60;
+    futDsatVolWk = futDsatWkTotal;
+    futDsatHrsWk = futDsatVolWk*tDsat/60;
   } else {
-    const aiMo=futDsatMo*aiRate,spotMo=ataiN(aiMo,Zd,0.5,Ed),humanMo=futDsatMo*(1-aiRate);
-    futDsatVolWk=(spotMo+humanMo)/WEEKS; futDsatHrsWk=futDsatVolWk*tDsat/60;
+    const aiMo   = futDsatMo*aiRate;
+    const spotMo = cochran(aiMo, Zd, 0.5, Ed);
+    const humanMo= futDsatMo*(1-aiRate);
+    futDsatVolWk = (spotMo+humanMo)/WEEKS;
+    futDsatHrsWk = futDsatVolWk*tDsat/60;
   }
-  const futDispVolWk=futAtaiVolWk*dispRate;
-  const futDispHrsWk=futDispVolWk*tDisp/60;
-  const futManualVolWk=futAtaiVolWk+futDsatVolWk+futDispVolWk;
-  const futAtaVolWk=futManualVolWk*ataRate;
-  const futAtaHrsWk=futAtaVolWk*tAta/60;
-  const futTotalHrs=futAtaiHrsWk+futDsatHrsWk+thfHrs+futDispHrsWk+futAtaHrsWk;
-  const futFtes=auditAvail>0?futTotalHrs/auditAvail:Infinity;
-  const futFtesCeil=Math.ceil(futFtes*10)/10;
 
-  document.getElementById('fut-kpis').innerHTML=
-    kpi('Total QA audit hrs/wk',fmt(futTotalHrs,1),'all workstreams','accent')+
-    kpi('QA FTEs required',fmt(futFtesCeil,1),'for statistical validity',futFtesCeil<=3?'good':futFtesCeil<=5?'good':futFtesCeil<=7?'warn':'bad')+
-    kpi('ATAI /wk',fmt(futAtaiVolWk),fmt(futAtaiHrsWk,1)+' hrs')+
-    kpi('DSAT reviewed /wk',fmt(futDsatVolWk,1),(aiRate>0?`${fmt(aiRate*100,0)}% AI-handled`:'100% manual'))+
-    kpi('ATA /wk',fmt(futAtaVolWk,1),fmt(futAtaHrsWk,1)+' hrs')+
-    kpi('Disputes /wk',fmt(futDispVolWk,1),fmt(futDispHrsWk,1)+' hrs');
+  // THF
+  const thfMo = n('f-thf-cs')+n('f-thf-ts');
+  const thfWk = thfMo/WEEKS, thfHrs = thfWk*tThf/60;
+
+  // Disputes + ATA
+  const futDispVolWk = futAtaiVolWk*dispRate;
+  const futDispHrsWk = futDispVolWk*tDisp/60;
+  const futManualVolWk = futAtaiVolWk+futDsatVolWk+futDispVolWk;
+  const futAtaVolWk  = futManualVolWk*ataRate;
+  const futAtaHrsWk  = futAtaVolWk*tAta/60;
+
+  const futTotalHrs = futAtaiHrsWk+futDsatHrsWk+thfHrs+futDispHrsWk+futAtaHrsWk;
+  const futFtes     = auditAvail>0 ? futTotalHrs/auditAvail : Infinity;
+  const futFtesCeil = Math.ceil(futFtes*10)/10;
+
+  document.getElementById('fut-kpis').innerHTML =
+    kpi('Total QA audit hrs/wk', fmt(futTotalHrs,1), 'all workstreams', 'accent') +
+    kpi('QA FTEs required', fmt(futFtesCeil,1), 'for statistical validity',
+        futFtesCeil<=3?'good':futFtesCeil<=5?'good':futFtesCeil<=7?'warn':'bad') +
+    kpi('ATAI /wk', fmt(futAtaiVolWk), fmt(futAtaiHrsWk,1)+' hrs') +
+    kpi('DSAT reviewed /wk', fmt(futDsatVolWk,1), aiRate>0?`${fmt(aiRate*100,0)}% AI-handled`:'100% manual') +
+    kpi('ATA /wk', fmt(futAtaVolWk,1), fmt(futAtaHrsWk,1)+' hrs') +
+    kpi('Disputes /wk', fmt(futDispVolWk,1), fmt(futDispHrsWk,1)+' hrs');
 
   const futRows=[
-    {ws:'ATAI (statistical sample)',owner:'QA — all LOBs',vol:futAtaiVolWk,min:tAtai,hrs:futAtaiHrsWk,color:'#1B2B4B'},
+    {ws:'ATAI (stat. sample per queue)',owner:'QA — all queues',vol:futAtaiVolWk,min:tAtai,hrs:futAtaiHrsWk,color:Q_COLORS.cs},
     {ws:'DSAT review'+(aiRate>0?' (AI spot-check)':' (100% manual)'),owner:aiRate>0?`AI ${fmt(aiRate*100,0)}%; QA validates`:'QA — fully manual',vol:futDsatVolWk,min:tDsat,hrs:futDsatHrsWk,color:'#DC2626'},
-    {ws:'THF reviews',owner:'QA — 100% coverage',vol:thfWk,min:tThf,hrs:thfHrs,color:'#059669'},
+    {ws:'THF reviews',owner:'QA — 100% coverage',vol:thfWk,min:tThf,hrs:thfHrs,color:Q_COLORS.ts},
     {ws:'Dispute reviews',owner:'Sr. QA / QM',vol:futDispVolWk,min:tDisp,hrs:futDispHrsWk,color:'#4F46E5'},
-    {ws:'ATA — Audit the Auditor',owner:`QA — ${fmt(ataRate*100,0)}% of manual vol.`,vol:futAtaVolWk,min:tAta,hrs:futAtaHrsWk,color:'#F39C12'},
+    {ws:'ATA — Audit the Auditor',owner:`QA — ${fmt(ataRate*100,0)}% of manual vol.`,vol:futAtaVolWk,min:tAta,hrs:futAtaHrsWk,color:Q_COLORS.l2},
   ];
-  document.getElementById('fut-tbody').innerHTML=futRows.map(r=>`<tr>
+  document.getElementById('fut-tbody').innerHTML = futRows.map(r=>`<tr>
     <td><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${r.color};margin-right:6px"></span><strong>${r.ws}</strong></td>
     <td style="font-size:11px;color:var(--gray-400)">${r.owner}</td>
     <td>${fmt(r.vol,1)}/wk</td><td>${fmt(r.min)} min</td>
     <td style="font-weight:600">${fmt(r.hrs,1)} hrs</td>
     <td><div class="bar-track"><div class="bar-fill" style="background:${r.color};width:${futTotalHrs>0?Math.min(r.hrs/futTotalHrs*100,100).toFixed(0):0}%"></div></div></td>
     </tr>`).join('');
-  document.getElementById('fut-tfoot').innerHTML=`<tr class="tfoot-row"><td>Total</td><td>QA team</td><td>—</td><td>—</td><td style="color:var(--navy)">${fmt(futTotalHrs,1)} hrs/wk</td><td></td></tr>`;
+  document.getElementById('fut-tfoot').innerHTML = `<tr class="tfoot-row"><td>Total</td><td>QA team</td><td>—</td><td>—</td><td style="color:var(--navy)">${fmt(futTotalHrs,1)} hrs/wk</td><td></td></tr>`;
 
-  // ── COMPARISON ──
-  const delta=(a,b)=>{const d=b-a;if(Math.abs(d)<0.05)return`<span class="delta-zero">—</span>`;return d>0?`<span class="delta-pos">+${fmt(d,1)} hrs ▲</span>`:`<span class="delta-neg">${fmt(d,1)} hrs ▼</span>`;};
+  // Summary above table
+  document.getElementById('f-atai-summary').textContent =
+    `Stat. significant samples: CS ${fmt(queueSamples[0].perWk)}/wk · TS ${fmt(queueSamples[1].perWk)}/wk · L2 ${fmt(queueSamples[2].perWk)}/wk · Total ${fmt(futAtaiVolWk)}/wk`;
+
+  // Queue coverage table
+  document.getElementById('fut-queue-tbody').innerHTML = queueSamples.map(q=>{
+    const cov = q.vol>0?(q.sample/q.vol)*100:0;
+    return `<tr>
+      <td><span style="color:${q.color};font-weight:600">● ${q.name}</span></td>
+      <td>${fmt(q.vol)}/mo</td>
+      <td>${fmt(q.sample)}/mo</td>
+      <td>${fmt(q.perWk)}/wk</td>
+      <td>${fmt(cov,1)}%<div class="bar-track" style="margin-top:2px"><div class="bar-fill" style="background:${q.color};width:${Math.min(cov,100).toFixed(0)}%"></div></div></td>
+      <td>${fmt(q.dsat)}/mo</td></tr>`;
+  }).join('');
+
+  // Stash for comparison
+  window._fut = { futAtaiHrsWk, futDsatHrsWk, thfHrs, futDispHrsWk, futAtaHrsWk,
+    futTotalHrs, futFtesCeil, futAtaiVolWk, futDsatVolWk, futAtaVolWk, futDispVolWk,
+    tAtai, tDsat, tThf, tAta, tDisp, aiRate, ataRate, dispRate, queues, Zd, Ed,
+    futDsatWkTotal, thfWk, auditAvail };
+  calcComparison();
+}
+
+// ── Comparison ────────────────────────────────────────────
+function calcComparison(){
+  if(!window._cur || !window._fut) return;
+  const C = window._cur, F = window._fut;
+  const auditAvail = F.auditAvail;
+
+  const delta=(a,b)=>{
+    const d=b-a;
+    if(Math.abs(d)<0.05) return `<span class="delta-zero">—</span>`;
+    return d>0?`<span class="delta-pos">+${fmt(d,1)} hrs ▲</span>`:`<span class="delta-neg">${fmt(d,1)} hrs ▼</span>`;
+  };
+
   document.getElementById('cmp-tbody').innerHTML=[
-    {ws:'ATAI',cOwn:`Managers + QA (${fmt(curAtaiTotWk)}/wk)`,cH:curAtaiMgrHrs+curAtaiQaHrs,fOwn:'QA only — stat. sample',fH:futAtaiHrsWk},
-    {ws:'DSAT reviews',cOwn:`Managers (${fmt(curDsatWk,0)}/wk, manual)`,cH:curDsatHrs,fOwn:aiRate>0?`AI + QA spot-check (${fmt(futDsatVolWk,0)}/wk)`:`QA manual (${fmt(futDsatWkTotal,0)}/wk)`,fH:futDsatHrsWk},
-    {ws:'THF reviews',cOwn:'QA (100%)',cH:thfHrs,fOwn:'QA (100%)',fH:thfHrs},
-    {ws:'Dispute reviews',cOwn:'Ad hoc / undefined',cH:0,fOwn:'Sr. QA / QM (formalised)',fH:futDispHrsWk},
-    {ws:'ATA',cOwn:`QA — ${fmt(curAtaWk)}/wk (fixed targets)`,cH:curAtaHrs,fOwn:`QA — ${fmt(ataRate*100,0)}% of manual vol.`,fH:futAtaHrsWk},
+    {ws:'ATAI',cOwn:`Managers + QA (${fmt(C.curAtaiTotWk)}/wk)`,cH:C.curAtaiMgrHrs+C.curAtaiQaHrs,fOwn:'QA only — stat. sample',fH:F.futAtaiHrsWk},
+    {ws:'DSAT reviews',cOwn:`Managers (${fmt(C.curDsatWk,0)}/wk, manual)`,cH:C.curDsatHrs,fOwn:F.aiRate>0?`AI + QA spot-check (${fmt(F.futDsatVolWk,0)}/wk)`:`QA manual (${fmt(F.futDsatWkTotal,0)}/wk)`,fH:F.futDsatHrsWk},
+    {ws:'THF reviews',cOwn:'QA (100%)',cH:C.thfHrs,fOwn:'QA (100%)',fH:F.thfHrs},
+    {ws:'Dispute reviews',cOwn:'Ad hoc / undefined',cH:0,fOwn:'Sr. QA / QM (formalised)',fH:F.futDispHrsWk},
+    {ws:'ATA',cOwn:`QA — ${fmt(C.curAtaWk)}/wk (fixed targets)`,cH:C.curAtaHrs,fOwn:`QA — ${fmt(F.ataRate*100,0)}% of manual vol.`,fH:F.futAtaHrsWk},
   ].map(r=>`<tr><td><strong>${r.ws}</strong></td>
     <td style="font-size:11px;color:#2563EB">${r.cOwn}</td><td>${fmt(r.cH,1)} hrs</td>
     <td style="font-size:11px;color:var(--green)">${r.fOwn}</td><td>${fmt(r.fH,1)} hrs</td>
     <td>${delta(r.cH,r.fH)}</td></tr>`).join('');
 
-  const mgrReleased=curMgrHrsWk;
-  const qaShift=futTotalHrs-curQaHrsWk;
-  document.getElementById('cmp-kpis').innerHTML=
-    kpi('Manager hrs released/wk',fmt(mgrReleased,1),'ATAI + DSAT → freed for coaching','good')+
-    kpi('QA hrs change/wk',(qaShift>=0?'+':'')+fmt(qaShift,1),'vs current QA load',qaShift>8?'warn':qaShift<-2?'good':'')+
-    kpi('Current QA FTEs needed',fmt(curQaFtesCeil,1),'for existing QA workload')+
-    kpi('Future QA FTEs needed',fmt(futFtesCeil,1),'absorbing all audit governance',futFtesCeil<=curQaFtesCeil?'good':'warn');
+  const mgrReleased = C.curMgrHrsWk;
+  const qaShift     = F.futTotalHrs - C.curQaHrsWk;
+  document.getElementById('cmp-kpis').innerHTML =
+    kpi('Manager hrs released/wk', fmt(mgrReleased,1), 'ATAI + DSAT → freed for coaching', 'good') +
+    kpi('QA hrs change/wk', (qaShift>=0?'+':'')+fmt(qaShift,1), 'vs current QA load', qaShift>8?'warn':qaShift<-2?'good':'') +
+    kpi('Current QA FTEs needed', fmt(C.curQaFtesCeil,1), 'for existing QA workload') +
+    kpi('Future QA FTEs needed', fmt(F.futFtesCeil,1), 'absorbing all audit governance', F.futFtesCeil<=C.curQaFtesCeil?'good':'warn');
 
   mkStacked('stk-cur','leg-cur',[
-    {label:'ATAI',hrs:curAtaiQaHrs/Math.max(curQaFtesCeil,1),color:'#1B2B4B'},
-    {label:'THF',hrs:thfHrs/Math.max(curQaFtesCeil,1),color:'#059669'},
-    {label:'ATA',hrs:curAtaHrs/Math.max(curQaFtesCeil,1),color:'#F39C12'},
-    {label:'Meetings',hrs:tMtg,color:'#64748B'},
-    {label:'Projects',hrs:tProj,color:'#00A8E0'},
-    {label:'Admin',hrs:tAdmin,color:'#D97706'},
-    {label:'L&D',hrs:tLd,color:'#7C3AED'},
-  ],wkT);
+    {label:'ATAI',hrs:C.curAtaiQaHrs/Math.max(C.curQaFtesCeil,1),color:Q_COLORS.cs},
+    {label:'THF', hrs:C.thfHrs/Math.max(C.curQaFtesCeil,1), color:Q_COLORS.ts},
+    {label:'ATA', hrs:C.curAtaHrs/Math.max(C.curQaFtesCeil,1), color:Q_COLORS.l2},
+  ], auditAvail);
   mkStacked('stk-fut','leg-fut',[
-    {label:'ATAI',hrs:futAtaiHrsWk/Math.max(futFtesCeil,1),color:'#1B2B4B'},
-    {label:'DSAT',hrs:futDsatHrsWk/Math.max(futFtesCeil,1),color:'#DC2626'},
-    {label:'THF',hrs:thfHrs/Math.max(futFtesCeil,1),color:'#059669'},
-    {label:'Disputes',hrs:futDispHrsWk/Math.max(futFtesCeil,1),color:'#4F46E5'},
-    {label:'ATA',hrs:futAtaHrsWk/Math.max(futFtesCeil,1),color:'#F39C12'},
-    {label:'Meetings',hrs:tMtg,color:'#64748B'},
-    {label:'Projects',hrs:tProj,color:'#00A8E0'},
-    {label:'Admin',hrs:tAdmin,color:'#D97706'},
-    {label:'L&D',hrs:tLd,color:'#7C3AED'},
-  ],wkT);
-
-  document.getElementById('cmp-note').textContent=`Future state absorbs ${fmt(mgrReleased,1)} hrs/week of audit work from managers (ATAI + DSAT), freeing TL time for coaching delivery. QA workload ${qaShift>=0?'increases by '+fmt(qaShift,1)+' hrs/week':'decreases by '+fmt(Math.abs(qaShift),1)+' hrs/week'}. Statistical validity across all workstreams requires ${fmt(futFtesCeil,1)} QA FTEs at ${fmt(auditAvail)} audit-available hrs/FTE.`;
+    {label:'ATAI',   hrs:F.futAtaiHrsWk/Math.max(F.futFtesCeil,1),  color:Q_COLORS.cs},
+    {label:'DSAT',   hrs:F.futDsatHrsWk/Math.max(F.futFtesCeil,1),  color:'#DC2626'},
+    {label:'THF',    hrs:F.thfHrs/Math.max(F.futFtesCeil,1),        color:Q_COLORS.ts},
+    {label:'Disputes',hrs:F.futDispHrsWk/Math.max(F.futFtesCeil,1), color:'#4F46E5'},
+    {label:'ATA',    hrs:F.futAtaHrsWk/Math.max(F.futFtesCeil,1),   color:Q_COLORS.l2},
+  ], auditAvail);
 
   // FTE scenarios
-  function scenarioHrs(aiR){
-    const dMo=n('fut-dsat-cs')+n('fut-dsat-ts')+n('fut-dsat-l2')+n('fut-dsat-rn');
-    let dH,dV;
-    if(aiR===0){dV=dMo/WEEKS;dH=dV*tDsat/60;}
-    else{const aiMo=dMo*aiR,sp=ataiN(aiMo,Zd,0.5,Ed),hm=dMo*(1-aiR);dV=(sp+hm)/WEEKS;dH=dV*tDsat/60;}
-    const dispH=(futAtaiVolWk*dispRate)*tDisp/60;
-    const mv=futAtaiVolWk+dV+(futAtaiVolWk*dispRate);
-    return futAtaiHrsWk+dH+thfHrs+dispH+(mv*ataRate*tAta/60);
+  function scenarioTotalHrs(aiR){
+    const dMo = F.queues.reduce((s,q)=>s+q.dsat,0);
+    let dV, dH;
+    if(aiR===0){ dV=dMo/WEEKS; dH=dV*F.tDsat/60; }
+    else {
+      const aiMo=dMo*aiR, sp=cochran(aiMo,1.96,0.5,F.Ed), hm=dMo*(1-aiR);
+      dV=(sp+hm)/WEEKS; dH=dV*F.tDsat/60;
+    }
+    const dispH=(F.futAtaiVolWk*F.dispRate)*F.tDisp/60;
+    const mv=F.futAtaiVolWk+dV+(F.futAtaiVolWk*F.dispRate);
+    return F.futAtaiHrsWk+dH+F.thfHrs+dispH+(mv*F.ataRate*F.tAta/60);
   }
-  const aiPct=parseInt(document.getElementById('fut-ai').value);
+  const aiPct = parseInt(document.getElementById('f-ai').value);
   const scens=[
-    {label:'Current QA baseline (as-is)',h:curQaHrsWk,cur:true},
-    {label:`Future: AI ${aiPct}% DSAT triage (current setting)`,h:futTotalHrs,cur:false},
-    {label:'Future: No AI — 100% manual DSAT',h:scenarioHrs(0),cur:false},
-    {label:'Future: AI 85% DSAT triage',h:scenarioHrs(0.85),cur:false},
+    {label:'Current QA baseline (as-is)',          h:C.curQaHrsWk,         cur:true},
+    {label:`Future: AI ${aiPct}% DSAT triage (current setting)`,h:F.futTotalHrs,cur:false},
+    {label:'Future: No AI — 100% manual DSAT',     h:scenarioTotalHrs(0),  cur:false},
+    {label:'Future: AI 85% DSAT triage',           h:scenarioTotalHrs(.85),cur:false},
   ];
-  document.getElementById('fte-scenarios').innerHTML=scens.map(s=>{
-    const f=auditAvail>0?s.h/auditAvail:Infinity;const fc=Math.ceil(f*10)/10;
-    const diff=fc-curQaFtesCeil;
-    return`<tr${s.cur?' style="background:var(--gray-50);font-weight:600"':''}>
+  document.getElementById('fte-scenarios').innerHTML = scens.map(s=>{
+    const fc=Math.ceil((auditAvail>0?s.h/auditAvail:Infinity)*10)/10;
+    const diff=fc-C.curQaFtesCeil;
+    return `<tr${s.cur?' style="background:var(--gray-50);font-weight:600"':''}>
       <td>${s.label}${s.cur?' ← baseline':''}</td>
       <td>${fmt(s.h,1)} hrs</td><td>${fmt(auditAvail)} hrs</td>
       <td style="font-weight:700">${fmt(fc,1)} FTEs</td>
       <td class="${diff===0?'delta-zero':diff>0?'delta-pos':'delta-neg'}">${diff===0?'—':diff>0?'+'+fmt(diff,1):fmt(diff,1)}</td></tr>`;
   }).join('');
-  document.getElementById('fte-note').textContent=`Current QA workload requires ${fmt(curQaFtesCeil,1)} QA FTEs at ${fmt(auditAvail)} audit-available hours per FTE. Future state (absorbing all ATAI and DSAT governance) requires ${fmt(futFtesCeil,1)} FTEs. The "No AI" row shows worst-case headcount if the AI DSAT classifier is never built.`;
+  document.getElementById('fte-note').textContent =
+    `Current QA workload requires ${fmt(C.curQaFtesCeil,1)} FTEs at ${fmt(auditAvail)} audit-available hrs/FTE. Future state requires ${fmt(F.futFtesCeil,1)} FTEs absorbing all ATAI and DSAT governance.`;
+
+  document.getElementById('cmp-note').textContent =
+    `Future state absorbs ${fmt(mgrReleased,1)} hrs/week of audit work from managers (ATAI + DSAT), freeing TL time for coaching. QA workload ${qaShift>=0?'increases by '+fmt(qaShift,1)+' hrs/week':'decreases by '+fmt(Math.abs(qaShift),1)+' hrs/week'}. Statistical validity across all workstreams requires ${fmt(F.futFtesCeil,1)} QA FTEs at ${fmt(auditAvail)} audit-available hrs/FTE.`;
 }
 
-calc();
+// ── Third Layer of Defense ────────────────────────────────
+function calcDefense(){
+  const csVol = n('d-cs-vol'), tsVol = n('d-ts-vol'), l2Vol = n('d-l2-vol');
+  const Z2 = parseFloat(document.getElementById('d-l2-conf').value);
+  const E2 = parseFloat(document.getElementById('d-l2-moe').value);
+  const acc = n('d-accuracy')/100;
+  const Z3 = parseFloat(document.getElementById('d-l3-conf').value);
+  const E3 = parseFloat(document.getElementById('d-l3-moe').value);
+  const qaTime = n('d-qa-time');
+
+  const queues = [
+    {id:'cs', name:Q_NAMES.cs, color:Q_COLORS.cs, vol:csVol},
+    {id:'ts', name:Q_NAMES.ts, color:Q_COLORS.ts, vol:tsVol},
+    {id:'l2', name:Q_NAMES.l2, color:Q_COLORS.l2, vol:l2Vol},
+  ];
+
+  let totL1=0, totL2Sample=0, totL3Sample=0, totQaHrsMo=0;
+  const rows = queues.map(q=>{
+    // Layer 2: AI audit bot samples from Layer 1 volume
+    const l2Sample = cochran(q.vol, Z2, acc, E2);
+    const l2PerWk  = Math.ceil(l2Sample/WEEKS);
+    // Layer 3: QA samples from Layer 2 output
+    const l3Sample = cochran(l2Sample, Z3, acc, E3);
+    const l3PerWk  = Math.ceil(l3Sample/WEEKS);
+    const qaMoHrs  = (l3Sample*qaTime)/60;
+    totL1      += q.vol;
+    totL2Sample+= l2Sample;
+    totL3Sample+= l3Sample;
+    totQaHrsMo += qaMoHrs;
+    return {...q, l2Sample, l2PerWk, l3Sample, l3PerWk, qaMoHrs};
+  });
+
+  // L2 KPIs
+  document.getElementById('d-l2-kpis').innerHTML =
+    kpi('Total L1 vol./mo', fmt(totL1), 'AI scores 100% of tickets') +
+    kpi('Total L2 sample/mo', fmt(totL2Sample), `${fmt(totL2Sample/totL1*100,1)}% of L1`, 'info') +
+    kpi('L2 sample/wk', fmt(Math.ceil(totL2Sample/WEEKS)), 'across all queues');
+
+  document.getElementById('d-l2-tbody').innerHTML = rows.map(r=>{
+    const covPct = r.vol>0?(r.l2Sample/r.vol)*100:0;
+    return `<tr>
+      <td><span style="color:${r.color};font-weight:600">● ${r.name}</span></td>
+      <td>${fmt(r.vol)}/mo</td>
+      <td style="font-weight:600">${fmt(r.l2Sample)}/mo</td>
+      <td>${fmt(r.l2PerWk)}/wk</td>
+      <td>${fmt(covPct,1)}%<div class="bar-track" style="margin-top:2px"><div class="bar-fill" style="background:${r.color};width:${Math.min(covPct,100).toFixed(0)}%"></div></div></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('d-l2-tfoot').innerHTML = `<tr class="tfoot-row">
+    <td>Total</td><td>${fmt(totL1)}/mo</td>
+    <td>${fmt(totL2Sample)}/mo</td><td>${fmt(Math.ceil(totL2Sample/WEEKS))}/wk</td><td>—</td></tr>`;
+
+  // L3 KPIs
+  document.getElementById('d-l3-kpis').innerHTML =
+    kpi('Total L3 QA sample/mo', fmt(totL3Sample), `${fmt(totL3Sample/totL2Sample*100,1)}% of L2 output`, 'good') +
+    kpi('QA hrs needed/mo', fmt(totQaHrsMo,1), `${fmt(qaTime)} min/review · all queues`) +
+    kpi('QA hrs needed/wk', fmt(totQaHrsMo/WEEKS,1), 'avg across the month');
+
+  document.getElementById('d-l3-tbody').innerHTML = rows.map(r=>{
+    const covPct = r.l2Sample>0?(r.l3Sample/r.l2Sample)*100:0;
+    return `<tr>
+      <td><span style="color:${r.color};font-weight:600">● ${r.name}</span></td>
+      <td>${fmt(r.l2Sample)}/mo</td>
+      <td style="font-weight:600">${fmt(r.l3Sample)}/mo</td>
+      <td>${fmt(r.l3PerWk)}/wk</td>
+      <td>${fmt(r.qaMoHrs,1)} hrs</td>
+      <td>${fmt(covPct,1)}%<div class="bar-track" style="margin-top:2px"><div class="bar-fill" style="background:${r.color};width:${Math.min(covPct,100).toFixed(0)}%"></div></div></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('d-l3-tfoot').innerHTML = `<tr class="tfoot-row">
+    <td>Total</td><td>${fmt(totL2Sample)}/mo</td>
+    <td>${fmt(totL3Sample)}/mo</td><td>${fmt(Math.ceil(totL3Sample/WEEKS))}/wk</td>
+    <td>${fmt(totQaHrsMo,1)} hrs/mo</td><td>—</td></tr>`;
+
+  document.getElementById('d-note').textContent =
+    `With ${fmt(totL1)} tickets/month scored by AI (Layer 1), the audit bot (Layer 2) spot-checks ${fmt(totL2Sample)} cases/month (${fmt(totL2Sample/totL1*100,1)}% of volume) at the configured confidence and margin of error. The QA team (Layer 3) then reviews ${fmt(totL3Sample)} of those Layer 2 outputs/month — ${fmt(totQaHrsMo/WEEKS,1)} hrs/week on average — maintaining statistical significance at the human review level without touching raw tickets.`;
+}
+
+// ── Init ─────────────────────────────────────────────────
+calcTimeBudget();
+calcCurrent();
+calcFuture();
+calcDefense();
 </script>
 </body>
 </html>
